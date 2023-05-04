@@ -1,19 +1,31 @@
-import { useState, useEffect, useRef } from 'react';
-import { LOGIN_URL, USER_REGEX, TEL_REGEX } from '../../Constants/Constants';
+import { useState, useEffect } from 'react';
 
-// import axios from 'axios'
-import { Link } from 'react-router-dom';
+import {
+	LOGIN_URL,
+	USER_REGEX,
+	TEL_REGEX,
+	EMAIL_REGEX,
+} from '../../Constants/Constants';
 
-const RegisterNewLecturer = () => {
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { Container, Box, Typography, CssBaseline } from '@mui/material';
+
+//  import './LecturerRegistration.css'
+
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const LecturerRegistration = () => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [telNumber, setTelNumber] = useState('');
 	const [email, setEmail] = useState('');
-   	const [qualification, setQualification] = useState(''); 
-    const [department, setDepartment] = useState('');
+	const [qualification, setQualification] = useState('');
+	const [department, setDepartment] = useState('');
 
-
-	const userRef = useRef<HTMLInputElement | null>(null);
+	// const userRef = useRef<HTMLInputElement | null>(null);
+	const navigate = useNavigate();
 
 	const [errorFirstName, setErrorFirstName] = useState('');
 	const [errorLastName, setErrorLastName] = useState('');
@@ -21,125 +33,290 @@ const RegisterNewLecturer = () => {
 	const [errorQualification, setErrorQualification] = useState('');
 	const [errorEmail, setErrorEmail] = useState('');
 	const [errorDepartment, setErrorDepartment] = useState('');
+	const [errEntries, setErrEntries] = useState(false);
 
-	const [isValidEntry, setIsValidEntry] = useState(false);
-	// const [success, setSuccess] = useState(false);
+	const [errResponse, setErrResponse] = useState('');
 
-	// useEffect(() => {
-	// 	setIsValidEntry('');
-	// }, [password, userName]);
+	useEffect(() => {
+		setErrEntries(false);
+	}, [lastName, firstName, telNumber, qualification, email, department]);
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
+	useEffect(() => {
+		setErrResponse('Me I am Here!');
+	}, [errResponse]);
 
-		if (USER_REGEX.test(lastName)) {
+	const ValidateAllDataEntries = () => {
+		if (USER_REGEX.test(lastName) || lastName.length === 0) {
 			setErrorLastName('');
 		} else {
 			setErrorLastName('Last Name is Invalid');
-        }
-        
-		if (USER_REGEX.test(firstName)) {
+			setErrEntries(true);
+		}
+
+		if (USER_REGEX.test(firstName) || firstName.length === 0) {
 			setErrorFirstName('');
 		} else {
 			setErrorFirstName('First Name is Invalid');
-        }
-        
-		if (USER_REGEX.test(qualification)) {
+			setErrEntries(true);
+		}
+
+		if (USER_REGEX.test(qualification) || qualification.length === 0) {
 			setErrorQualification('');
 		} else {
 			setErrorQualification('Entry is Invalid');
+			setErrEntries(true);
 		}
 
-		if (TEL_REGEX.test(telNumber)) {
+		if (TEL_REGEX.test(telNumber) || telNumber.length === 0) {
 			setErrorTelNo('');
 		} else {
 			setErrorTelNo('Phone Number is Invalid');
+			setErrEntries(true);
 		}
 
-		
+		if (EMAIL_REGEX.test(email) || email.length === 0) {
+			setErrorEmail('');
+		} else {
+			setErrorEmail('Email entry is Invalid');
+			setErrEntries(true);
+		}
 
-        if (errorMsg) {
-            setIsValidEntry(false)
+		if (EMAIL_REGEX.test(department) || department.length === 0) {
+			setDepartment('');
+		} else {
+			setDepartment('Department entry is Invalid');
+			setErrEntries(true);
+		}
+	};
+
+	const ResetInputEntries = () => {
+		setErrEntries(false);
+
+		setErrorLastName('');
+		setErrorFirstName('');
+		setErrorQualification('');
+		setErrorTelNo('');
+		setErrorEmail('');
+		setErrorDepartment('');
+
+		setLastName('');
+		setFirstName('');
+		setQualification('');
+		setTelNumber('');
+		setEmail('');
+		setDepartment('');
+	};
+
+	const RegisterLecturer = async (e: React.FormEvent) => {
+		e.preventDefault();
+
+		ValidateAllDataEntries();
+
+		if (errEntries) {
 			return;
 		}
 
+		/// Place Entries in object format for Saving
+		const entryData = {
+			lastName,
+			firstName,
+			email,
+			telNumber,
+			qualification,
+			department,
+		};
+
 		try {
-			const response = await axios.post(
-				LOGIN_URL,
-				JSON.stringify({
-					userName: userName,
-					password: password,
-				})
-			);
+			const response = await axios.post(LOGIN_URL, entryData, {});
 			console.log(response?.data);
 
 			//Store the token in global API Context, and use when sending
 			// const accessToken = response?.data?.accessToken;
 
-			setSuccess(true);
-			setPassword('');
-			setUserName('');
+			ResetInputEntries();
 		} catch (err: any) {
 			console.log(err);
 			if (!err?.response) {
-				setErrorMsg('No Server Response');
+				setErrResponse('No Server Response');
 			} else if (err.response?.status === 400) {
-				setErrorMsg('Invalid Username or Password');
+				setErrResponse('Invalid Username or Password');
 			} else if (err.response?.status === 401) {
-				setErrorMsg('Unauthorized');
+				setErrResponse('Unauthorized');
 			} else {
-				setErrorMsg('Login Failed');
+				setErrResponse('Login Failed');
 			}
+			setErrEntries(true);
 		}
+		setErrResponse('Me am here');
+	};
+
+	const EndRegistrationSession = () => {
+		// navigate('/adminboard')
 	};
 
 	return (
-		<>
-			<div>Add New Lecturers</div>
-			<Link to='/adminboard'>
-				<button>Back</button>
-			</Link>
-		</>
-	);
+		<Container
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				justifyContent: 'center',
+				height: '100vh',
+				width: '30rem',
+			}}>
+			<CssBaseline />
+			<Box sx={{ height: 'auto', border: 1, borderRadius: '1rem', p: 4 }}>
+				<Box>Provide your login details to create lecturer profile</Box>
 
-	// 	return (
-	// 		<>
-	// 			{success ? (
-	// 				<section>
-	// 					<h1>Login Successful</h1>
-	// 					<br />
-	// 					<p>
-	// 						<a href='#'>Go to dashboard</a>
-	// 					</p>
-	// 				</section>
-	// 			) : (
-	// 				<section className='maincontainer'>
-	// 					{{ errorMsg } && <p>{errorMsg}</p>}
-	// 					<form
-	// 						onSubmit={handleSubmit}
-	// 						className='login_container'>
-	// 						<label htmlFor='username'>Username</label>
-	// 						<input
-	// 							type='text'
-	// 							id='username'
-	// 							ref={userRef}
-	// 							onChange={(e) => setUserName(e.target.value)}
-	// 							value={userName}
-	// 						/>
-	// 						<label htmlFor='password'>password</label>
-	// 						<input
-	// 							type='password'
-	// 							id='password'
-	// 							value={password}
-	// 							required
-	// 							onChange={(e) => setPassword(e.target.value)}
-	// 						/>
-	// 						<button>Sign In</button>
-	// 					</form>
-	// 				</section>
-	// 			)}
-	// 		</>
-	// 	);
+				{errResponse && <Box>{errResponse}</Box>}
+
+				<Box
+					component='form'
+					onSubmit={RegisterLecturer}
+					// sx={ {
+					// 	display: 'flex',
+					// 	flexDirection: 'column',
+					// 	Width: '28rem',
+					// border:1} }
+				>
+					<TextField
+						fullWidth
+						sx={{ maxWidth: '28.5rem' }}
+						id='firstname'
+						name='firstname'
+						label='FirstName'
+						placeholder='FirstName'
+						autoFocus
+						required
+						value={firstName}
+						onChange={(e) => setFirstName(e.target.value)}
+						error={firstName.length > 0 && firstName.length < 3}
+						helperText={
+							firstName.length === 0 || firstName.length >= 2
+								? ''
+								: 'FirstName requires a minimum of 2 Characters'
+						}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						margin='normal'
+					/>
+					<TextField
+						fullWidth
+						sx={{ maxWidth: '28rem' }}
+						id='lastName'
+						name='lastName'
+						label='LastName'
+						placeholder='LastName'
+						required
+						value={lastName}
+						onChange={(e) => setLastName(e.target.value)}
+						error={lastName.length > 0 && lastName.length < 3}
+						helperText={
+							lastName.length === 0 || lastName.length >= 2
+								? ''
+								: 'LastName requires a minimum of 3 Characters'
+						}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						margin='normal'
+					/>
+					<TextField
+						fullWidth
+						sx={{ maxWidth: '28rem' }}
+						id='email'
+						name='email'
+						label='email'
+						placeholder='email'
+						required
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						error={email.length > 0 && !EMAIL_REGEX.test(email)}
+						helperText={
+							email.length === 0 || EMAIL_REGEX.test(email)
+								? ''
+								: 'Email entered is incorrect.'
+						}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						margin='normal'
+					/>
+					<TextField
+						fullWidth
+						sx={{ maxWidth: '28rem' }}
+						id='telNumber'
+						name='telNumber'
+						label='telNumber'
+						placeholder='Telephone Number'
+						required
+						value={telNumber}
+						onChange={(e) => setTelNumber(e.target.value)}
+						error={email.length > 0 && !TEL_REGEX.test(email)}
+						helperText={
+							email.length === 0 || TEL_REGEX.test(email)
+								? ''
+								: 'Phone Number entered is incorrect.'
+						}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						margin='normal'
+					/>
+					<TextField
+						fullWidth
+						sx={{ maxWidth: '28rem' }}
+						id='quailify'
+						name='quailify'
+						label='Qualification'
+						placeholder='Qualification'
+						required
+						value={qualification}
+						onChange={(e) => setQualification(e.target.value)}
+						error={qualification.length > 0 && qualification.length < 6}
+						helperText={
+							qualification.length === 0 || qualification.length > 6
+								? ''
+								: 'Qualification entered is incorrect.'
+						}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						margin='normal'
+					/>
+					<TextField
+						fullWidth
+						sx={{ maxWidth: '28rem' }}
+						id='department'
+						name='department'
+						label='Department'
+						placeholder='Enter Department'
+						required
+						value={department}
+						onChange={(e) => setDepartment(e.target.value)}
+						error={department.length > 0 && department.length < 6}
+						helperText={
+							department.length === 0 || department.length > 6
+								? ''
+								: 'Department entered is incorrect.'
+						}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						margin='normal'
+					/>
+					<Button
+						onClick={() => EndRegistrationSession()}
+						type='submit'
+						fullWidth
+						variant='contained'>
+						Save
+					</Button>
+				</Box>
+			</Box>
+		</Container>
+	);
 };
 
-export default RegisterNewLecturer;
+export default LecturerRegistration;

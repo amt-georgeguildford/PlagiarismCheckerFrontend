@@ -2,12 +2,9 @@ import Login from './Login';
 import AdminDashboard from './Components/AdminDashboard/AdminDashBoard';
 import Lecturerdashboard from './Components/LecturerDashboard/LecturerDashboard';
 import StudentDashboard from './Components/StudentDashboard/StudentDashboard';
-
-
+import LecturerRegistration from './Components/LectuterRegistration/LecturerRegistration';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-
 
 function App() {
 	return (
@@ -21,6 +18,10 @@ function App() {
 					<Route
 						path='/adminboard'
 						element={<AdminDashboard />}
+					/>
+					<Route
+						path='/newlecturer'
+						element={<LecturerRegistration />}
 					/>
 					<Route
 						path='/lecturerboard'
