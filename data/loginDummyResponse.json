@@ -1,0 +1,39 @@
+[
+    {
+        "user": {
+            "isstaff": true,
+            "id": "202544LT23",
+            "email": "georgeguildford1997@gmail.com",
+            "isverified": false
+        },
+        "tokens": {
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N0YWZmIjp0cnVlLCJpZCI6IjIwMjU0NExUMjMiLCJlbWFpbCI6Imdlb3JnZWd1aWxkZm9yZDE5OTdAZ21haWwuY29tIiwiaWF0IjoxNjgzMTA5MzgyLCJleHAiOjE2ODMxMTExODJ9.Cgn0F8fO6b9mYZXJP7ZD1Q4E-lzTYJJrDvDpxggROws",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N0YWZmIjp0cnVlLCJpZCI6IjIwMjU0NExUMjMiLCJlbWFpbCI6Imdlb3JnZWd1aWxkZm9yZDE5OTdAZ21haWwuY29tIiwiaWF0IjoxNjgzMTA5MzgyLCJleHAiOjE2ODMxOTU3ODJ9.FtV1V7Vm5IJf68Cee1Swlve3HuoTYIl89wNDjWFG060"
+        }
+    },
+    {
+        "user": {
+            "isadmin": true,
+            "id": "202544LT23",
+            "email": "akappiah@gmail.com",
+            "isverified": false
+        },
+        "tokens": {
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N0YWZmIjp0cnVlLCJpZCI6IjIwMjU0NExUMjMiLCJlbWFpbCI6Imdlb3JnZWd1aWxkZm9yZDE5OTdAZ21haWwuY29tIiwiaWF0IjoxNjgzMTA5MzgyLCJleHAiOjE2ODMxMTExODJ9.Cgn0F8fO6b9mYZXJP7ZD1Q4E-lzTYJJrDvDpxggROws",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N0YWZmIjp0cnVlLCJpZCI6IjIwMjU0NExUMjMiLCJlbWFpbCI6Imdlb3JnZWd1aWxkZm9yZDE5OTdAZ21haWwuY29tIiwiaWF0IjoxNjgzMTA5MzgyLCJleHAiOjE2ODMxOTU3ODJ9.FtV1V7Vm5IJf68Cee1Swlve3HuoTYIl89wNDjWFG060"
+        }
+    },
+    {
+        "user": {
+            "isstudent": true,
+            "id": "202544LT23",
+            "email": "georgeguildford1997@gmail.com",
+            "isverified": false
+        },
+        "tokens": {
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N0YWZmIjp0cnVlLCJpZCI6IjIwMjU0NExUMjMiLCJlbWFpbCI6Imdlb3JnZWd1aWxkZm9yZDE5OTdAZ21haWwuY29tIiwiaWF0IjoxNjgzMTA5MzgyLCJleHAiOjE2ODMxMTExODJ9.Cgn0F8fO6b9mYZXJP7ZD1Q4E-lzTYJJrDvDpxggROws",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N0YWZmIjp0cnVlLCJpZCI6IjIwMjU0NExUMjMiLCJlbWFpbCI6Imdlb3JnZWd1aWxkZm9yZDE5OTdAZ21haWwuY29tIiwiaWF0IjoxNjgzMTA5MzgyLCJleHAiOjE2ODMxOTU3ODJ9.FtV1V7Vm5IJf68Cee1Swlve3HuoTYIl89wNDjWFG060"
+        }
+    }
+    
+]
