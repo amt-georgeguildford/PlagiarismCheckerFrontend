@@ -3,6 +3,7 @@ import AdminDashboard from './Components/AdminDashboard/AdminDashBoard';
 import Lecturerdashboard from './Components/LecturerDashboard/LecturerDashboard';
 import StudentDashboard from './Components/StudentDashboard/StudentDashboard';
 import LecturerRegistration from './Components/LectuterRegistration/LecturerRegistration';
+import StudentRegistation from './Components/StudentRegistration/StudentRegistation';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -30,6 +31,15 @@ function App() {
 					<Route
 						path='/studentboard'
 						element={<StudentDashboard />}
+					/>
+					<Route
+						path='/newstudent'
+						element={<StudentRegistation />}
+					/>
+
+					<Route
+						path='*'
+						element={<AdminDashboard />}
 					/>
 				</Routes>
 			</Router>

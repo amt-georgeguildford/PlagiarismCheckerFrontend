@@ -11,32 +11,23 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Container, Box, CssBaseline } from '@mui/material';
 
-
 import axios from 'axios';
 
-
-const LecturerRegistration = () => {
-
+const StudentRegistation = () => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [telNumber, setTelNumber] = useState('');
 	const [email, setEmail] = useState('');
-	const [qualification, setQualification] = useState('');
 	const [department, setDepartment] = useState('');
 
-	// const navigate = useNavigate();
 
 	const [errEntries, setErrEntries] = useState(false);
 	const [errResponse, setErrResponse] = useState('');
 
 	useEffect(() => {
-	
-			setErrEntries(false);
-			setErrResponse('')
-
-	}, [lastName, firstName, telNumber, qualification, email, department]);
-
-
+		setErrEntries(false);
+		setErrResponse('');
+	}, [lastName, firstName, telNumber, email, department]);
 
 	const ValidateAllDataEntries = () => {
 		if (USER_REGEX.test(lastName)) {
@@ -45,11 +36,6 @@ const LecturerRegistration = () => {
 		}
 
 		if (USER_REGEX.test(firstName)) {
-			setErrEntries(true);
-			return;
-		}
-
-		if (USER_REGEX.test(qualification)) {
 			setErrEntries(true);
 			return;
 		}
@@ -73,13 +59,12 @@ const LecturerRegistration = () => {
 	const ResetInputEntries = () => {
 		setLastName('');
 		setFirstName('');
-		setQualification('');
 		setTelNumber('');
 		setEmail('');
 		setDepartment('');
 	};
 
-	const RegisterLecturer = async (e: React.FormEvent) => {
+	const RegisterStudent = async (e: React.FormEvent) => {
 		e.preventDefault();
 
 		ValidateAllDataEntries();
@@ -94,8 +79,7 @@ const LecturerRegistration = () => {
 			firstName,
 			email,
 			telNumber,
-			qualification,
-			department,
+			department
 		};
 
 		try {
@@ -117,13 +101,9 @@ const LecturerRegistration = () => {
 			} else {
 				setErrResponse('Login Failed');
 			}
-		
 		}
-
-
 	};
 
-	
 	return (
 		<Container
 			sx={{
@@ -150,32 +130,32 @@ const LecturerRegistration = () => {
 					justifyContent: 'center',
 					maxWidth: '28.5rem',
 				}}>
-				<Box sx={{
-					fontSize: "16",
-					color: "#252525",
-					textAlign: "center",
-					mb: '1rem'
-				}}
-				>
-					Provide your login details to create lecturer profile
+				<Box
+					sx={{
+						fontSize: '16',
+						color: '#252525',
+						textAlign: 'center',
+						mb: '0.8rem',
+					}}>
+					Provide your login details to create student profile
 				</Box>
 
 				{errResponse && (
-					<Box sx={ {
-						fontSize: '1rem',
-						fontWeight:600,
-						color:'red',
-						mt: "0.8rem",
-						bgcolor:"lightgreen"
-					}}
-					>
-						{ errResponse }
+					<Box
+						sx={{
+							fontSize: '1rem',
+							fontWeight: 600,
+							color: 'red',
+							mt: '0.8rem',
+							bgcolor: 'lightgreen',
+						}}>
+						{errResponse}
 					</Box>
 				)}
 
 				<Box
 					component='form'
-					onSubmit={RegisterLecturer}
+					onSubmit={RegisterStudent}
 					sx={{ maxWidth: '28.5rem' }}>
 					<TextField
 						fullWidth
@@ -265,27 +245,6 @@ const LecturerRegistration = () => {
 					<TextField
 						fullWidth
 						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
-						id='quailify'
-						name='quailify'
-						label='Qualification'
-						placeholder='Qualification'
-						required
-						value={qualification}
-						onChange={(e) => setQualification(e.target.value)}
-						error={qualification.length > 0 && qualification.length < 6}
-						helperText={
-							qualification.length === 0 || qualification.length >= 6
-								? ''
-								: 'Qualification entered is incorrect.'
-						}
-						InputLabelProps={{
-							shrink: true,
-						}}
-						margin='normal'
-					/>
-					<TextField
-						fullWidth
-						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='department'
 						name='department'
 						label='Department'
@@ -305,11 +264,9 @@ const LecturerRegistration = () => {
 						margin='normal'
 					/>
 					<Button
-						// onClick={EndRegistrationSession}
 						type='submit'
 						fullWidth
 						variant='contained'
-						// disabled={!errEntries}
 						sx={{
 							maxWidth: '22.5rem',
 							bgcolor: '#3C5148',
@@ -318,7 +275,7 @@ const LecturerRegistration = () => {
 							fontFamily: 'Exo, sans-serif',
 							fontWeight: 500,
 							fontSize: 20,
-							textTransform: 'none'
+							textTransform: 'none',
 						}}>
 						Save
 					</Button>
@@ -328,4 +285,4 @@ const LecturerRegistration = () => {
 	);
 };
 
-export default LecturerRegistration;
+export default StudentRegistation;
