@@ -9,14 +9,14 @@ import {
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Container, Box, Typography, CssBaseline } from '@mui/material';
+import { Container, Box, CssBaseline } from '@mui/material';
 
-//  import './LecturerRegistration.css'
 
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const LecturerRegistration = () => {
+
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [telNumber, setTelNumber] = useState('');
@@ -24,81 +24,53 @@ const LecturerRegistration = () => {
 	const [qualification, setQualification] = useState('');
 	const [department, setDepartment] = useState('');
 
-	// const userRef = useRef<HTMLInputElement | null>(null);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
-	const [errorFirstName, setErrorFirstName] = useState('');
-	const [errorLastName, setErrorLastName] = useState('');
-	const [errorTelNo, setErrorTelNo] = useState('');
-	const [errorQualification, setErrorQualification] = useState('');
-	const [errorEmail, setErrorEmail] = useState('');
-	const [errorDepartment, setErrorDepartment] = useState('');
 	const [errEntries, setErrEntries] = useState(false);
-
 	const [errResponse, setErrResponse] = useState('');
 
 	useEffect(() => {
-		setErrEntries(false);
+	
+			setErrEntries(false);
+			setErrResponse('')
+
 	}, [lastName, firstName, telNumber, qualification, email, department]);
 
-	useEffect(() => {
-		setErrResponse('Me I am Here!');
-	}, [errResponse]);
+
 
 	const ValidateAllDataEntries = () => {
-		if (USER_REGEX.test(lastName) || lastName.length === 0) {
-			setErrorLastName('');
-		} else {
-			setErrorLastName('Last Name is Invalid');
+		if (USER_REGEX.test(lastName)) {
 			setErrEntries(true);
+			return;
 		}
 
-		if (USER_REGEX.test(firstName) || firstName.length === 0) {
-			setErrorFirstName('');
-		} else {
-			setErrorFirstName('First Name is Invalid');
+		if (USER_REGEX.test(firstName)) {
 			setErrEntries(true);
+			return;
 		}
 
-		if (USER_REGEX.test(qualification) || qualification.length === 0) {
-			setErrorQualification('');
-		} else {
-			setErrorQualification('Entry is Invalid');
+		if (USER_REGEX.test(qualification)) {
 			setErrEntries(true);
+			return;
 		}
 
-		if (TEL_REGEX.test(telNumber) || telNumber.length === 0) {
-			setErrorTelNo('');
-		} else {
-			setErrorTelNo('Phone Number is Invalid');
+		if (TEL_REGEX.test(telNumber)) {
 			setErrEntries(true);
+			return;
 		}
 
-		if (EMAIL_REGEX.test(email) || email.length === 0) {
-			setErrorEmail('');
-		} else {
-			setErrorEmail('Email entry is Invalid');
+		if (EMAIL_REGEX.test(email)) {
 			setErrEntries(true);
+			return;
 		}
 
-		if (EMAIL_REGEX.test(department) || department.length === 0) {
-			setDepartment('');
-		} else {
-			setDepartment('Department entry is Invalid');
+		if (EMAIL_REGEX.test(department)) {
 			setErrEntries(true);
+			return;
 		}
 	};
 
 	const ResetInputEntries = () => {
-		setErrEntries(false);
-
-		setErrorLastName('');
-		setErrorFirstName('');
-		setErrorQualification('');
-		setErrorTelNo('');
-		setErrorEmail('');
-		setErrorDepartment('');
-
 		setLastName('');
 		setFirstName('');
 		setQualification('');
@@ -132,7 +104,7 @@ const LecturerRegistration = () => {
 
 			//Store the token in global API Context, and use when sending
 			// const accessToken = response?.data?.accessToken;
-
+			setErrResponse('Record Successfully Saved');
 			ResetInputEntries();
 		} catch (err: any) {
 			console.log(err);
@@ -145,15 +117,13 @@ const LecturerRegistration = () => {
 			} else {
 				setErrResponse('Login Failed');
 			}
-			setErrEntries(true);
+		
 		}
-		setErrResponse('Me am here');
+
+
 	};
 
-	const EndRegistrationSession = () => {
-		// navigate('/adminboard')
-	};
-
+	
 	return (
 		<Container
 			sx={{
@@ -162,26 +132,54 @@ const LecturerRegistration = () => {
 				alignItems: 'center',
 				justifyContent: 'center',
 				height: '100vh',
-				width: '30rem',
+				// maxwidth: '30rem',
+				width: '100%',
 			}}>
 			<CssBaseline />
-			<Box sx={{ height: 'auto', border: 1, borderRadius: '1rem', p: 4 }}>
-				<Box>Provide your login details to create lecturer profile</Box>
+			<Box
+				sx={{
+					border: 1,
+					borderRadius: '1rem',
+					py: 4,
+					pl: 6,
+					pr: 5,
+					my: 3,
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'center',
+					maxWidth: '28.5rem',
+				}}>
+				<Box sx={{
+					fontSize: "16",
+					color: "#252525",
+					textAlign: "center",
+					mb: '1rem'
+				}}
+				>
+					Provide your login details to create lecturer profile
+				</Box>
 
-				{errResponse && <Box>{errResponse}</Box>}
+				{errResponse && (
+					<Box sx={ {
+						fontSize: '1rem',
+						fontWeight:600,
+						color:'red',
+						mt: "0.8rem",
+						bgcolor:"lightgreen"
+					}}
+					>
+						{ errResponse }
+					</Box>
+				)}
 
 				<Box
 					component='form'
 					onSubmit={RegisterLecturer}
-					// sx={ {
-					// 	display: 'flex',
-					// 	flexDirection: 'column',
-					// 	Width: '28rem',
-					// border:1} }
-				>
+					sx={{ maxWidth: '28.5rem' }}>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '28.5rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='firstname'
 						name='firstname'
 						label='FirstName'
@@ -203,7 +201,7 @@ const LecturerRegistration = () => {
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '28rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='lastName'
 						name='lastName'
 						label='LastName'
@@ -215,7 +213,7 @@ const LecturerRegistration = () => {
 						helperText={
 							lastName.length === 0 || lastName.length >= 2
 								? ''
-								: 'LastName requires a minimum of 3 Characters'
+								: 'Lastname requires a minimum of 3 Characters'
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -224,11 +222,11 @@ const LecturerRegistration = () => {
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '28rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='email'
 						name='email'
-						label='email'
-						placeholder='email'
+						label='Email'
+						placeholder='Email'
 						required
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
@@ -245,19 +243,19 @@ const LecturerRegistration = () => {
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '28rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='telNumber'
 						name='telNumber'
-						label='telNumber'
-						placeholder='Telephone Number'
+						label='Number'
+						placeholder='Number'
 						required
 						value={telNumber}
 						onChange={(e) => setTelNumber(e.target.value)}
-						error={email.length > 0 && !TEL_REGEX.test(email)}
+						error={telNumber.length > 0 && !TEL_REGEX.test(telNumber)}
 						helperText={
-							email.length === 0 || TEL_REGEX.test(email)
+							telNumber.length === 0 || TEL_REGEX.test(telNumber)
 								? ''
-								: 'Phone Number entered is incorrect.'
+								: 'Telephone Number must be at least 10 digits.'
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -266,7 +264,7 @@ const LecturerRegistration = () => {
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '28rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='quailify'
 						name='quailify'
 						label='Qualification'
@@ -276,7 +274,7 @@ const LecturerRegistration = () => {
 						onChange={(e) => setQualification(e.target.value)}
 						error={qualification.length > 0 && qualification.length < 6}
 						helperText={
-							qualification.length === 0 || qualification.length > 6
+							qualification.length === 0 || qualification.length >= 6
 								? ''
 								: 'Qualification entered is incorrect.'
 						}
@@ -287,7 +285,7 @@ const LecturerRegistration = () => {
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '28rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
 						id='department'
 						name='department'
 						label='Department'
@@ -297,9 +295,9 @@ const LecturerRegistration = () => {
 						onChange={(e) => setDepartment(e.target.value)}
 						error={department.length > 0 && department.length < 6}
 						helperText={
-							department.length === 0 || department.length > 6
+							department.length === 0 || department.length >= 6
 								? ''
-								: 'Department entered is incorrect.'
+								: 'Department must be at least 6 Characters.'
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -307,10 +305,21 @@ const LecturerRegistration = () => {
 						margin='normal'
 					/>
 					<Button
-						onClick={() => EndRegistrationSession()}
+						// onClick={EndRegistrationSession}
 						type='submit'
 						fullWidth
-						variant='contained'>
+						variant='contained'
+						// disabled={!errEntries}
+						sx={{
+							maxWidth: '22.5rem',
+							bgcolor: '#3C5148',
+							borderRadius: '0.5rem',
+							border: '1 Solid #FFFFFF',
+							fontFamily: 'Exo, sans-serif',
+							fontWeight: 500,
+							fontSize: 20,
+							textTransform: 'none'
+						}}>
 						Save
 					</Button>
 				</Box>
