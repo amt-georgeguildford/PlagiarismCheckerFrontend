@@ -150,36 +150,45 @@ const LecturerRegistration = () => {
 					justifyContent: 'center',
 					maxWidth: '28.5rem',
 				}}>
-				<Box sx={{
-					fontSize: "16",
-					color: "#252525",
-					textAlign: "center",
-					mb: '1rem'
-				}}
-				>
+				<Box
+					sx={{
+						fontSize: '16',
+						color: '#252525',
+						textAlign: 'center',
+						mb: '0.2rem',
+					}}>
 					Provide your login details to create lecturer profile
 				</Box>
-
-				{errResponse && (
-					<Box sx={ {
-						fontSize: '1rem',
-						fontWeight:600,
-						color:'red',
-						mt: "0.8rem",
-						bgcolor:"lightgreen"
-					}}
-					>
-						{ errResponse }
-					</Box>
-				)}
-
+				<Box
+					sx={{
+						height: '2rem',
+						width: '100%',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}>
+					{errResponse && (
+						<Box
+							sx={{
+								fontSize: '1rem',
+								fontWeight: 400,
+								color: 'red',
+								mt: '0.8rem',
+								width: '100%',
+								height: '2rem',
+								textAlign: 'center',
+							}}>
+							{errResponse}
+						</Box>
+					)}
+				</Box>
 				<Box
 					component='form'
 					onSubmit={RegisterLecturer}
 					sx={{ maxWidth: '28.5rem' }}>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '0.3rem' }}
 						id='firstname'
 						name='firstname'
 						label='FirstName'
@@ -191,17 +200,17 @@ const LecturerRegistration = () => {
 						error={firstName.length > 0 && firstName.length < 3}
 						helperText={
 							firstName.length === 0 || firstName.length >= 2
-								? ''
+								? ' '
 								: 'FirstName requires a minimum of 2 Characters'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '0.3rem' }}
 						id='lastName'
 						name='lastName'
 						label='LastName'
@@ -212,17 +221,17 @@ const LecturerRegistration = () => {
 						error={lastName.length > 0 && lastName.length < 3}
 						helperText={
 							lastName.length === 0 || lastName.length >= 2
-								? ''
+								? ' '
 								: 'Lastname requires a minimum of 3 Characters'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '0.3rem' }}
 						id='email'
 						name='email'
 						label='Email'
@@ -233,17 +242,17 @@ const LecturerRegistration = () => {
 						error={email.length > 0 && !EMAIL_REGEX.test(email)}
 						helperText={
 							email.length === 0 || EMAIL_REGEX.test(email)
-								? ''
-								: 'Email entered is incorrect.'
+								? ' '
+								: 'Email requires a minimum of 6 Characters.'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '0.3rem' }}
 						id='telNumber'
 						name='telNumber'
 						label='Number'
@@ -254,17 +263,17 @@ const LecturerRegistration = () => {
 						error={telNumber.length > 0 && !TEL_REGEX.test(telNumber)}
 						helperText={
 							telNumber.length === 0 || TEL_REGEX.test(telNumber)
-								? ''
+								? ' '
 								: 'Telephone Number must be at least 10 digits.'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
-						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
+						sx={{ maxWidth: '22.5rem', mb: '0.3rem' }}
 						id='quailify'
 						name='quailify'
 						label='Qualification'
@@ -275,13 +284,13 @@ const LecturerRegistration = () => {
 						error={qualification.length > 0 && qualification.length < 6}
 						helperText={
 							qualification.length === 0 || qualification.length >= 6
-								? ''
-								: 'Qualification entered is incorrect.'
+								? ' '
+								: 'Qualification must be at least 6 Characters.'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
@@ -296,13 +305,13 @@ const LecturerRegistration = () => {
 						error={department.length > 0 && department.length < 6}
 						helperText={
 							department.length === 0 || department.length >= 6
-								? ''
+								? ' '
 								: 'Department must be at least 6 Characters.'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<Button
 						// onClick={EndRegistrationSession}
@@ -318,7 +327,7 @@ const LecturerRegistration = () => {
 							fontFamily: 'Exo, sans-serif',
 							fontWeight: 500,
 							fontSize: 20,
-							textTransform: 'none'
+							textTransform: 'none',
 						}}>
 						Save
 					</Button>

@@ -135,28 +135,37 @@ const StudentRegistation = () => {
 						fontSize: '16',
 						color: '#252525',
 						textAlign: 'center',
-						mb: '0.8rem',
+						mb: '0.3rem',
 					}}>
 					Provide your login details to create student profile
 				</Box>
-
-				{errResponse && (
-					<Box
-						sx={{
-							fontSize: '1rem',
-							fontWeight: 600,
-							color: 'red',
-							mt: '0.8rem',
-							bgcolor: 'lightgreen',
-						}}>
-						{errResponse}
-					</Box>
-				)}
-
+				<Box
+					sx={{
+						height: '2rem',
+						width: '100%',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}>
+					{errResponse && (
+						<Box
+							sx={{
+								fontSize: '1rem',
+								fontWeight: 400,
+								color: 'red',
+								mt: '0.8rem',
+								width: '100%',
+								height: '2rem',
+								textAlign: 'center',
+							}}>
+							{errResponse}
+						</Box>
+					)}
+				</Box>
 				<Box
 					component='form'
 					onSubmit={RegisterStudent}
-					sx={{ maxWidth: '28.5rem' }}>
+					sx={{ maxWidth: '28.5rem', mt: '0.2rem' }}>
 					<TextField
 						fullWidth
 						sx={{ maxWidth: '22.5rem', mb: '1rem' }}
@@ -171,13 +180,13 @@ const StudentRegistation = () => {
 						error={firstName.length > 0 && firstName.length < 3}
 						helperText={
 							firstName.length === 0 || firstName.length >= 2
-								? ''
+								? ' '
 								: 'FirstName requires a minimum of 2 Characters'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
@@ -192,13 +201,13 @@ const StudentRegistation = () => {
 						error={lastName.length > 0 && lastName.length < 3}
 						helperText={
 							lastName.length === 0 || lastName.length >= 2
-								? ''
+								? ' '
 								: 'Lastname requires a minimum of 3 Characters'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
@@ -213,13 +222,13 @@ const StudentRegistation = () => {
 						error={email.length > 0 && !EMAIL_REGEX.test(email)}
 						helperText={
 							email.length === 0 || EMAIL_REGEX.test(email)
-								? ''
+								? ' '
 								: 'Email entered is incorrect.'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
@@ -234,13 +243,13 @@ const StudentRegistation = () => {
 						error={telNumber.length > 0 && !TEL_REGEX.test(telNumber)}
 						helperText={
 							telNumber.length === 0 || TEL_REGEX.test(telNumber)
-								? ''
+								? ' '
 								: 'Telephone Number must be at least 10 digits.'
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
-						margin='normal'
+						margin='dense'
 					/>
 					<TextField
 						fullWidth
@@ -255,7 +264,7 @@ const StudentRegistation = () => {
 						error={department.length > 0 && department.length < 6}
 						helperText={
 							department.length === 0 || department.length >= 6
-								? ''
+								? ' '
 								: 'Department must be at least 6 Characters.'
 						}
 						InputLabelProps={{

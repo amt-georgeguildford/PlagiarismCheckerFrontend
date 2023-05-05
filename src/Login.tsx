@@ -124,9 +124,10 @@ const Login = () => {
 				component='main'
 				sx={{
 					height: '100vh',
-					pt: '6rem',
+					pt: '2rem',
 					pb: '5rem',
-					px: '3.25rem',
+					pl: '2.25rem',
+					pr:'8rem',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
@@ -135,12 +136,12 @@ const Login = () => {
 
 				<Grid
 					container
-					spacing='1rem'
+					spacing='7rem'
 					direction={'row'}
-					sx={{ alignItems: 'center', justifyContent: 'space-around' }}>
+					sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
 					<Grid
 						item
-						xs='auto'>
+						xs='auto' sx={{display:'flex',justifyContent:"start"}}>
 						<Box
 						// sx={{
 						// 	display: 'flex',
@@ -150,13 +151,13 @@ const Login = () => {
 						>
 							<Topography
 								component='h1'
-								sx={{ fontSize: '2.5rem', mb: '1rem', textAlign: 'center' }}>
+								sx={{ fontSize: '2.5rem', mb: '2rem', textAlign: 'center' }}>
 								Welcome!
 							</Topography>
 
 							<img
 								src={LoginPix2}
-								alt='User Working At Amalitech'
+								alt='User Login'
 							/>
 						</Box>
 					</Grid>
@@ -165,12 +166,12 @@ const Login = () => {
 							sx={{
 								border: 1,
 								borderRadius: 2,
-								mt: 10,
-								px: 10,
-								pt: 4,
-								pb: 7,
+								mt: 11,
+								px: 5,
+								pt: 5,
+								pb: 5,
 								bgcolor: '#ffffff',
-								width: '31rem',
+								width: '33rem',
 							}}>
 							<Box
 								sx={{
@@ -180,7 +181,14 @@ const Login = () => {
 								}}>
 								<Topography
 									component='h1'
-									variant='subtitle2'>
+									variant='subtitle2'
+									sx={{
+										textAlign: 'center',
+										mb: 3,
+										lineHeight: '1.2rem',
+										maxWidth: '22.5rem',
+									}}
+								>
 									Log In
 								</Topography>
 								<Topography
@@ -188,23 +196,42 @@ const Login = () => {
 									sx={{
 										textAlign: 'center',
 										mt: 1.5,
-										mb: 3,
 										lineHeight: '1.2rem',
+										maxWidth: '22.5rem',
 									}}>
 									Provide your login details to access your account
 								</Topography>
-								{inValidEntry && (
-									<Box
-										component='span'
-										sx={{ color: 'red' }}>
-										{errorMsg}
-									</Box>
-								)}
+								<Box
+									sx={{
+										width: '100%',
+										height: '2rem',
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+									}}>
+									{inValidEntry && (
+										<Box
+											component='span'
+											sx={{
+												color: 'red',
+												fontSize: '1rem',
+												fontWeight: 400,
+												mt: '0.8rem',
+												width: '100%',
+												height: '2rem',
+												textAlign: 'center',
+											}}>
+											{errorMsg}
+										</Box>
+									)}
+								</Box>
+
 								<Box
 									component='form'
-									sx={{ mt: 3, mb: 1 }}
+									sx={{ mt: 2, maxWidth: '22.5rem' }}
 									onSubmit={handleSubmit}>
 									<TextField
+										sx={{ maxWidth: '22.5rem' }}
 										fullWidth
 										id='email'
 										name='email'
@@ -217,16 +244,16 @@ const Login = () => {
 										error={userName.length > 0 && userName.length < 8}
 										helperText={
 											userName.length === 0 || userName.length >= 8
-												? ''
-												: 'Email or ID Should be a minimum length of 8 Characters'
+												? ' '
+												: 'Email or ID Should be a minimum of 8 Characters'
 										}
 										InputLabelProps={{
 											shrink: true,
 										}}
-										margin='normal'
+										margin='dense'
 									/>
 									<TextField
-										sx={{ mt: '2.5rem' }}
+										sx={{ mt: '1.5rem', maxWidth: '22.5rem' }}
 										fullWidth
 										id='password'
 										variant='outlined'
@@ -242,8 +269,8 @@ const Login = () => {
 										}
 										helperText={
 											password.length === 0 || PWD_REGEX.test(password) === true
-												? ''
-												: 'Password length should be a minimum of 8 and include uppercase and alphanumeric characters'
+												? ' '
+												: 'Password should be a minimum of 8 characters'
 										}
 										InputLabelProps={{
 											shrink: true,
@@ -264,7 +291,7 @@ const Login = () => {
 									/>
 									<Grid
 										container
-										sx={{ mt: 0.5 }}>
+										sx={{ mt: 0.75 }}>
 										<Grid
 											item
 											xs></Grid>
