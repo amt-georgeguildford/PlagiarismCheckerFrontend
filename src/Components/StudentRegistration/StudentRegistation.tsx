@@ -20,7 +20,6 @@ const StudentRegistation = () => {
 	const [email, setEmail] = useState('');
 	const [department, setDepartment] = useState('');
 
-
 	const [errEntries, setErrEntries] = useState(false);
 	const [errResponse, setErrResponse] = useState('');
 
@@ -79,7 +78,7 @@ const StudentRegistation = () => {
 			firstName,
 			email,
 			telNumber,
-			department
+			department,
 		};
 
 		try {
@@ -112,8 +111,7 @@ const StudentRegistation = () => {
 				alignItems: 'center',
 				justifyContent: 'center',
 				height: '100vh',
-				// maxwidth: '30rem',
-				width: '100%',
+				width: '100vw',
 			}}>
 			<CssBaseline />
 			<Box

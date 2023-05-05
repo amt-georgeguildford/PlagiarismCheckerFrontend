@@ -132,8 +132,7 @@ const LecturerRegistration = () => {
 				alignItems: 'center',
 				justifyContent: 'center',
 				height: '100vh',
-				// maxwidth: '30rem',
-				width: '100%',
+				width: '100vw',
 			}}>
 			<CssBaseline />
 			<Box

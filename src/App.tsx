@@ -2,8 +2,9 @@ import Login from './Login';
 import AdminDashboard from './Components/AdminDashboard/AdminDashBoard';
 import Lecturerdashboard from './Components/LecturerDashboard/LecturerDashboard';
 import StudentDashboard from './Components/StudentDashboard/StudentDashboard';
-import LecturerRegistration from './Components/LectuterRegistration/LecturerRegistration';
+import LecturerRegistration from './Components/LecturerRegistration/LecturerRegistration';
 import StudentRegistation from './Components/StudentRegistration/StudentRegistation';
+import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -16,6 +17,12 @@ function App() {
 						path='/'
 						element={<Login />}
 					/>
+
+					<Route
+						path='/lostpassword'
+						element={<ForgetPassword />}
+					/>
+
 					<Route
 						path='/adminboard'
 						element={<AdminDashboard />}
