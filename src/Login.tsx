@@ -38,7 +38,7 @@ const theme = createTheme({
 
 //Regular React imports
 import { useEffect, useState } from 'react';
-import { PWD_REGEX, LOGIN_URL} from './Constants/Constants';
+import { PWD_REGEX, SERVER_URL} from './Constants/Constants';
 import axios from 'axios';
 
 const Login = () => {
@@ -59,73 +59,79 @@ const Login = () => {
 	}, [password, userName]);
 
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (
-			userName.length >= 8 &&
-			PWD_REGEX.test(password)
-		) {
-			setErrorMsg('');
-		} else {
-			setErrorMsg('Invalid UserName or Password');
-		}
+		// if (
+		// 	userName.length >= 8 &&
+		// 	PWD_REGEX.test(password)
+		// ) {
+		// 	console.log('pass')
+		// 	setErrorMsg('');
+		// } else {
+		// 	console.log('pads')
+		// 	setErrorMsg('Invalid UserName or Password');
+		// }
 
-		if (errorMsg) {
-			setInValidEntry(true);
-			return;
-		}
+		// if (errorMsg) {
+		// 	console.log('dsgsf')
+		// 	setInValidEntry(true);
+		// 	return;
+		// }
 
 
-		try {
-			const response = await axios.post(
-				LOGIN_URL,
-				JSON.stringify({
-					userName: userName,
-					password: password,
-				})
-			);
-			console.log(response?.data);
-
-			//Store the token in global API Context, and use when sending
-			const accessToken = response?.data;
-			
-
-			//If verified and valid user, redirect to needed dashboard
-
-			setInValidEntry(false);
-			setPassword('');
-			setUserName('');
-
-			if (accessToken.user.isverfied) {
-				//Confirm the user and redirect
-				localStorage.setItem('accessToken', accessToken.tokens.accessToken);
-
-				if (accessToken.user.role === 'ADMIN') {
-					navigate('/adminboard');
-				} else if (accessToken.user.role === 'LECTURER') {
-					navigate('/lecturerboard');
-				} else if (accessToken.user.role === 'STUDENT') {
-					navigate('/studentboard');
+		const login= async ()=>{
+			try {
+				const requestBody={
+					email: userName,
+					password
 				}
+				const response= await axios.post(SERVER_URL+'auth/login', requestBody)
+		
+				console.log(92, response.data);
+	
+				//Store the token in global API Context, and use when sending
+				const result = response.data;
 				
-			}else {
-					navigate('/accessToken.user.id');
-			}	
-
-		} catch (err:any) {
-			console.log(err);
-			if (!err?.response) {
-				setErrorMsg('No Server Response');
-			} else if (err.response?.status === 400) {
-				setErrorMsg('Invalid Username or Password');
-			} else if (err.response?.status === 401) {
-				setErrorMsg('Unauthorized');
-			} else {
-				setErrorMsg('Login Failed');
+	
+				//If verified and valid user, redirect to needed dashboard
+	
+				setInValidEntry(false);
+				setPassword('');
+				setUserName('');
+					
+				if (result.user.isverfied) {
+					//Confirm the user and redirect
+					localStorage.setItem('accessToken', result.tokens.accessToken);
+	
+					if (result.user.role === 'ADMIN') {
+						navigate('/adminboard');
+					} else if (result.user.role === 'LECTURER') {
+						navigate('/lecturerboard');
+					} else if (result.user.role === 'STUDENT') {
+						navigate('/studentboard');
+					}
+					
+				}else {
+						navigate('/reset');
+				}	
+	
+			} catch (err:any) {
+				console.log(err);
+				if (!err?.response) {
+					setErrorMsg('No Server Response');
+				} else if (err.response?.status === 400) {
+					setErrorMsg('Invalid Username or Password');
+				} else if (err.response?.status === 401) {
+					setErrorMsg('Unauthorized');
+				} else {
+					setErrorMsg('Login Failed');
+				}
+				setInValidEntry(true);
 			}
-			setInValidEntry(true);
 		}
+
+		login()
 
 	};
 

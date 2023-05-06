@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import {
-	LOGIN_URL,
+	SERVER_URL,
 	USER_REGEX,
 	TEL_REGEX,
 	EMAIL_REGEX,
@@ -64,10 +64,10 @@ const LecturerRegistration = () => {
 			return;
 		}
 
-		if (EMAIL_REGEX.test(department)) {
-			setErrEntries(true);
-			return;
-		}
+		// if (EMAIL_REGEX.test(department)) {
+		// 	setErrEntries(true);
+		// 	return;
+		// }
 	};
 
 	const ResetInputEntries = () => {
@@ -89,18 +89,26 @@ const LecturerRegistration = () => {
 		}
 
 		/// Place Entries in object format for Saving
+		// { 
+		// 	"firstname": "", 
+		// 	"lastname":"", 
+		// 	"email": "", 
+		// 	"phone_number": "", 
+		// 	"qualification":"Senior Programmer",
+		// 	"department": "201"
+		// }
 		const entryData = {
-			lastName,
-			firstName,
+			lastname:lastName,
+			firstname:firstName,
 			email,
-			telNumber,
+			phone_number: telNumber,
 			qualification,
 			department,
 		};
 
 		try {
-			const response = await axios.post(LOGIN_URL, entryData, {});
-			console.log(response?.data);
+			const response = await axios.post(SERVER_URL+'api/v1/admin/lecturer', entryData);
+			console.log(response.data);
 
 			//Store the token in global API Context, and use when sending
 			// const accessToken = response?.data?.accessToken;
@@ -302,9 +310,9 @@ const LecturerRegistration = () => {
 						required
 						value={department}
 						onChange={(e) => setDepartment(e.target.value)}
-						error={department.length > 0 && department.length < 6}
+						error={department.length > 0 && department.length < 3}
 						helperText={
-							department.length === 0 || department.length >= 6
+							department.length === 0 || department.length >= 3
 								? ' '
 								: 'Department must be at least 6 Characters.'
 						}

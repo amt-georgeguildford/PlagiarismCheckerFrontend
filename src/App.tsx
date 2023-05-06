@@ -7,6 +7,7 @@ import StudentRegistation from './Components/StudentRegistration/StudentRegistat
 import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
 	return (
@@ -43,7 +44,7 @@ function App() {
 						path='/newstudent'
 						element={<StudentRegistation />}
 					/>
-
+					<Route path='/reset' element={<ResetPasswordPage />}/>
 					<Route
 						path='*'
 						element={<AdminDashboard />}

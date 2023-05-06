@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import {
-	LOGIN_URL,
+	SERVER_URL,
 	USER_REGEX,
 	TEL_REGEX,
 	EMAIL_REGEX,
@@ -63,7 +63,7 @@ const StudentRegistation = () => {
 		setDepartment('');
 	};
 
-	const RegisterStudent = async (e: React.FormEvent) => {
+	const RegisterStudent = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		ValidateAllDataEntries();
@@ -73,34 +73,38 @@ const StudentRegistation = () => {
 		}
 
 		/// Place Entries in object format for Saving
-		const entryData = {
-			lastName,
-			firstName,
-			email,
-			telNumber,
-			department,
-		};
+		
 
-		try {
-			const response = await axios.post(LOGIN_URL, entryData, {});
-			console.log(response?.data);
-
-			//Store the token in global API Context, and use when sending
-			// const accessToken = response?.data?.accessToken;
-			setErrResponse('Record Successfully Saved');
-			ResetInputEntries();
-		} catch (err: any) {
-			console.log(err);
-			if (!err?.response) {
-				setErrResponse('No Server Response');
-			} else if (err.response?.status === 400) {
-				setErrResponse('Invalid Username or Password');
-			} else if (err.response?.status === 401) {
-				setErrResponse('Unauthorized');
-			} else {
-				setErrResponse('Login Failed');
+		const registerStudent= async ()=>{
+			const entryData = {
+				lastname:lastName,
+				firstname:firstName,
+				email,
+				phone_number:telNumber,
+				department,
+			};
+			try {
+				const response = await axios.post(SERVER_URL+'api/v1/staff/student', entryData);
+				console.log(response?.data);
+	
+				//Store the token in global API Context, and use when sending
+				// const accessToken = response?.data?.accessToken;
+				setErrResponse('Record Successfully Saved');
+				ResetInputEntries();
+			} catch (err: any) {
+				console.log(err);
+				if (!err?.response) {
+					setErrResponse('No Server Response');
+				} else if (err.response?.status === 400) {
+					setErrResponse('Invalid Username or Password');
+				} else if (err.response?.status === 401) {
+					setErrResponse('Unauthorized');
+				} else {
+					setErrResponse('Login Failed');
+				}
 			}
 		}
+		registerStudent()
 	};
 
 	return (
@@ -260,9 +264,9 @@ const StudentRegistation = () => {
 						required
 						value={department}
 						onChange={(e) => setDepartment(e.target.value)}
-						error={department.length > 0 && department.length < 6}
+						error={department.length > 0 && department.length < 3}
 						helperText={
-							department.length === 0 || department.length >= 6
+							department.length === 0 || department.length >= 3
 								? ' '
 								: 'Department must be at least 6 Characters.'
 						}

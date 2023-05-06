@@ -9,7 +9,7 @@ import Topography from '@mui/material/Typography';
 
 //Regular React imports
 import { useState } from 'react';
-import {LOGIN_URL} from '../../Constants/Constants';
+import {SERVER_URL} from '../../Constants/Constants';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
@@ -40,7 +40,7 @@ const ForgetPassword = () => {
 
 		try {
 			const response = await axios.post(
-				LOGIN_URL,
+				SERVER_URL,
 				JSON.stringify({
 					userName: userName,
 				})
