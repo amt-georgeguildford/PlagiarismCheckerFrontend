@@ -13,6 +13,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 
 const LoginPix2 = '../LoginPix2.png';
+import { useNavigate } from 'react-router-dom';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -39,7 +40,6 @@ const theme = createTheme({
 import { useEffect, useState } from 'react';
 import { PWD_REGEX, LOGIN_URL} from './Constants/Constants';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -58,10 +58,6 @@ const Login = () => {
 		setErrorMsg('');
 	}, [password, userName]);
 
-
-	const ResetUserAccount = () => {
-		navigate('/lostpassword');
-	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -312,12 +308,12 @@ const Login = () => {
 											xs
 											sx={{ display: 'flex', justifyContent: 'end' }}>
 											<Link
-												// href='#'
-												onClick={ResetUserAccount}
+												href='/lostpassword'
+												underline='hover'
 												sx={{
 													textDecoration: 'none',
 													fontSize: '16',
-													color: 'black',
+													color: 'black'
 												}}>
 												Forgot Password
 											</Link>

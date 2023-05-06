@@ -313,11 +313,9 @@ const LecturerRegistration = () => {
 						margin='dense'
 					/>
 					<Button
-						// onClick={EndRegistrationSession}
 						type='submit'
 						fullWidth
 						variant='contained'
-						// disabled={!errEntries}
 						sx={{
 							maxWidth: '22.5rem',
 							bgcolor: '#3C5148',

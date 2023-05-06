@@ -9,7 +9,7 @@ import Topography from '@mui/material/Typography';
 
 //Regular React imports
 import { useState } from 'react';
-import {  LOGIN_URL} from '../../Constants/Constants';
+import {LOGIN_URL} from '../../Constants/Constants';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
@@ -51,29 +51,29 @@ const ForgetPassword = () => {
 				setMessages(
 					'Kindly check your email for instructions on your account password reset.'
 				);
-				setUserName('');
-				setSuccess(true);
+				
 			}
 		} catch (err:any) {
 			// const errors = err as Error | AxiosError;
 			console.log(err);
 			if (!err?.response) {
-				setMessages('No Server Response');
+				setMessages('Server is Currently Unavailable. Try Again Later.');
 			} else if (err.response?.status === 400) {
 				setMessages('Invalid Username or Password');
 			} else if (err.response?.status === 401) {
 				setMessages('Unauthorized');
 			} else {
-				setMessages('Login Failed');
+				setMessages('Request Cannot Be Currently Processed. Try Again Later');
 			}
 		}
-
+		setSuccess(true);
 	};
 
 	const CloseResetPage = () => {
-		setTimeout(() => {
+		setUserName('');
+		// setTimeout(() => {
 			navigate('/')
-		}, 3000);
+		// }, 3000);
 	}
 
 	return (
@@ -90,22 +90,24 @@ const ForgetPassword = () => {
 				justifyContent: 'center',
 			}}>
 			<CssBaseline />
-			<Box sx={ {
-				maxWidth: '30.5rem',
-				border: 1,
-				px:5,py:2,
-				borderRadius: 5
-			} }>
+			<Box
+				sx={{
+					maxWidth: '30.5rem',
+					border: 1,
+					px: 5,
+					py: 2,
+					borderRadius: 5,
+				}}>
 				<Box>
 					<Topography
 						sx={{
 							textAlign: 'center',
 							mt: 2,
-							mb: 1,
-							lineHeight: '1.2rem',
+							mb: 3,
+							lineHeight: '1rem',
 							maxWidth: '22.5rem',
 						}}>
-						Provide your email address or userID for password recovery
+						{messages?'Password reset request has been made.':'Kindly provide your email address for password reset'}
 					</Topography>
 					<Box
 						sx={{
@@ -114,6 +116,8 @@ const ForgetPassword = () => {
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'center',
+							maxWidth: '22.5rem',
+							mb:'2rem'
 						}}>
 						{messages && (
 							<Box
@@ -121,7 +125,7 @@ const ForgetPassword = () => {
 								sx={{
 									color: 'red',
 									fontSize: '1rem',
-									fontWeight: 400,
+									fontWeight: 300,
 									mt: '0.8rem',
 									width: '100%',
 									height: '2rem',
@@ -134,7 +138,7 @@ const ForgetPassword = () => {
 
 					<Box
 						component='form'
-						sx={{ mt: 2, mb: 2, maxWidth: '22.5rem' }}
+						sx={{ mt: 3, mb: 2, maxWidth: '22.5rem' }}
 						onSubmit={handleSubmit}>
 						<TextField
 							fullWidth
@@ -155,15 +159,15 @@ const ForgetPassword = () => {
 							InputLabelProps={{
 								shrink: true,
 							}}
-							margin='normal'
+							margin='dense'
 						/>
 						<Button
 							type='submit'
 							fullWidth
 							variant='contained'
 							sx={{
-								mt: 4,
-								mb: 3,
+								mt: 1,
+								mb: 2,
 								height: '51px',
 								bgcolor: '#3C5148',
 								borderColor: '#FFFFFF',
