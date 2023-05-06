@@ -101,11 +101,11 @@ const Login = () => {
 				//Confirm the user and redirect
 				localStorage.setItem('accessToken', accessToken.tokens.accessToken);
 
-				if (accessToken.user.isadmin === 'ADMIN') {
+				if (accessToken.user.role === 'ADMIN') {
 					navigate('/adminboard');
-				} else if (accessToken.user.islecturer === 'LECTURER') {
+				} else if (accessToken.user.role === 'LECTURER') {
 					navigate('/lecturerboard');
-				} else if (accessToken.user.isstudent === 'STUDENT') {
+				} else if (accessToken.user.role === 'STUDENT') {
 					navigate('/studentboard');
 				}
 				
