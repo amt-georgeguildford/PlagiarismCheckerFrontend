@@ -93,6 +93,7 @@ const ForgetPassword = () => {
 			<Box
 				sx={{
 					maxWidth: '30.5rem',
+					maxHeight:'20rem',
 					border: 1,
 					px: 5,
 					py: 2,
@@ -117,6 +118,7 @@ const ForgetPassword = () => {
 							alignItems: 'center',
 							justifyContent: 'center',
 							maxWidth: '22.5rem',
+							Height:'3rem',
 							mb:'2rem'
 						}}>
 						{messages && (

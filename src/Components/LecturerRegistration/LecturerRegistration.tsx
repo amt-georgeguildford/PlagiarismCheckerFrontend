@@ -148,6 +148,7 @@ const LecturerRegistration = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					maxWidth: '28.5rem',
+					maxHeight:'43.5rem'
 				}}>
 				<Box
 					sx={{
