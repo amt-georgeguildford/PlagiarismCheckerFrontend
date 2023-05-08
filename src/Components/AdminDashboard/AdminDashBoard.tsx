@@ -1,5 +1,22 @@
+import axios from 'axios';
+import { useEffect, useContext } from 'react';
+import { InitialContext } from '../../context/context';
 import { Link } from 'react-router-dom';
+import { SERVER_URL } from '../../Constants/Constants';
 const AdminDashboard = () => {
+	const {setDepartments}= useContext(InitialContext)
+	useEffect(()=>{
+		const fetchDepartment = async ()=>{
+			try {
+				const departments= await axios.get(SERVER_URL+'departments')
+				setDepartments(departments.data.result)
+
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		fetchDepartment()
+	}, [])
 	return (
 		<div>
 			<h1>Admin DashBoard</h1>

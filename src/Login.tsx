@@ -122,19 +122,30 @@ const Login = () => {
 						navigate('/reset/'+result.tokens.accessToken);
 				}	
 	
-			} catch (err: any) {
+			} catch (err: any) {		
+				if(err){
+					console.log(err)
+					if(err.response){
+						const {status, data}= err.response;
+						const messages= data.message
+						console.log('gerer')
+						if(status===400 ){
+							messages.forEach((field: any)=>{
+								field.path==='password'&& setPasswordError(true)
+								field.path==='email' && setUserNameError(true)
+								notification.error(field.msg)
+							})
+						}
+						else{
+							notification.error('Server Error')
+						}
+						return
+					}
+					notification.error('Check connection')
 					
-				const {status, data}= err.response;
-				const messages= data.message
-				if(status===400 ){
-					messages.forEach((field: any)=>{
-						field.path==='password'&& setPasswordError(true)
-						field.path==='email' && setUserNameError(true)
-						notification.error(field.msg)
-					})
 				}
 				else{
-					notification.error('Server Error')
+					notification.error('Check connection')
 				}
 				
 			}

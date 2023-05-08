@@ -1,4 +1,4 @@
-type ServerError={
+export type ServerError={
     status: string
     message: string | MessageSeries[]
 }  
@@ -11,4 +11,12 @@ interface MessageSeries{
     location: string
 }
 
-export default ServerError
+export type Department={
+    id: string
+    name: string
+}
+
+export type Context={
+    departments: Department[],
+    setDepartments: React.Dispatch<React.SetStateAction<Department[]>>
+}
