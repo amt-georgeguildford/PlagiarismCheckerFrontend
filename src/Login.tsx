@@ -19,6 +19,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 
+
 const theme = createTheme({
 	typography: {
 		fontFamily: 'Verdana, Geneva, Tahoma, sans-serif',
@@ -40,12 +41,18 @@ const theme = createTheme({
 import { useEffect, useState } from 'react';
 import { PWD_REGEX, SERVER_URL} from './Constants/Constants';
 import axios from 'axios';
+import notification from './config/notificationConfig';
+
 
 const Login = () => {
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState('');
 	const [password, setPassword] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
+	const [passwordError, setPasswordError]= useState(false)
+	const [userNameError, setUserNameError]= useState(false)
+	const [passwordChange, setPasswordChange]= useState(false)
+	const [userNameChange, setUserNameChange]= useState(false)
 	const [inValidEntry, setInValidEntry] = useState(false);
 
 	const [showPassword, setShowPassword] = useState(false);
@@ -79,7 +86,6 @@ const Login = () => {
 		// 	return;
 		// }
 
-
 		const login= async ()=>{
 			try {
 				const requestBody={
@@ -88,7 +94,7 @@ const Login = () => {
 				}
 				const response= await axios.post(SERVER_URL+'auth/login', requestBody)
 		
-				console.log(92, response.data);
+				console.log(92, response.data.user.isverified);
 	
 				//Store the token in global API Context, and use when sending
 				const result = response.data;
@@ -100,10 +106,10 @@ const Login = () => {
 				setPassword('');
 				setUserName('');
 					
-				if (result.user.isverfied) {
+				if (result.user.isverified) {
 					//Confirm the user and redirect
 					localStorage.setItem('accessToken', result.tokens.accessToken);
-	
+					notification.success("Login Successful")
 					if (result.user.role === 'ADMIN') {
 						navigate('/adminboard');
 					} else if (result.user.role === 'LECTURER') {
@@ -113,25 +119,30 @@ const Login = () => {
 					}
 					
 				}else {
-						navigate('/reset');
+					notification.info("Login Successful... reset password")
+						navigate('/reset/'+result.tokens.accessToken);
 				}	
 	
-			} catch (err:any) {
-				console.log(err);
-				if (!err?.response) {
-					setErrorMsg('No Server Response');
-				} else if (err.response?.status === 400) {
-					setErrorMsg('Invalid Username or Password');
-				} else if (err.response?.status === 401) {
-					setErrorMsg('Unauthorized');
-				} else {
-					setErrorMsg('Login Failed');
+			} catch (err: any) {
+					
+				const {status, data}= err.response;
+				const messages= data.message
+				if(status===400 ){
+					messages.forEach((field: any)=>{
+						field.path==='password'&& setPasswordError(true)
+						field.path==='email' && setUserNameError(true)
+						notification.error(field.msg)
+					})
 				}
-				setInValidEntry(true);
+				else{
+					notification.error('Server Error')
+				}
+				
 			}
 		}
-
-		login()
+		if(userName.length>0 && PWD_REGEX.test(password)){
+			login()
+		}
 
 	};
 
@@ -254,12 +265,11 @@ const Login = () => {
 										autoFocus
 										required
 										value={userName}
-										onChange={(e) => setUserName(e.target.value)}
-										error={userName.length > 0 && userName.length < 8}
+										onChange={(e) => {setUserName(e.target.value); setUserNameChange(true)}}
+										error={(userNameChange && userName.length==0 )|| userNameError}
 										helperText={
-											userName.length === 0 || userName.length >= 8
-												? ' '
-												: 'Email or ID Should be a minimum of 8 Characters'
+											userName.length ===0 && userNameChange?
+												'Email or ID should not be empty' : " "
 										}
 										InputLabelProps={{
 											shrink: true,
@@ -277,14 +287,13 @@ const Login = () => {
 										label='Password'
 										placeholder='Password'
 										value={password}
-										onChange={(e) => setPassword(e.target.value)}
+										onChange={(e) => {setPassword(e.target.value); setPasswordChange(true)}}
 										error={
-											password.length > 0 && PWD_REGEX.test(password) === false
+											(passwordChange &&  !PWD_REGEX.test(password)) || passwordError
 										}
 										helperText={
-											password.length === 0 || PWD_REGEX.test(password) === true
-												? ' '
-												: 'Password should be a minimum of 8 characters'
+											(( !PWD_REGEX.test(password)) && passwordChange)?
+												'Password should be a minimum of 8 characters with uppercase,lowercase and special character (!,#,$,%,^,*,+,-,_,=,?,@,|)': " "
 										}
 										InputLabelProps={{
 											shrink: true,
