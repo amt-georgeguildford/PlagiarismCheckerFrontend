@@ -93,8 +93,6 @@ const Login = () => {
 				}
 				const response= await axios.post(SERVER_URL+'auth/login', requestBody)
 		
-				console.log(92, response.data.user.isverified);
-	
 				//Store the token in global API Context, and use when sending
 				const result = response.data;
 				
@@ -124,11 +122,9 @@ const Login = () => {
 	
 			} catch (err: any) {		
 				if(err){
-					console.log(err)
 					if(err.response){
 						const {status, data}= err.response;
 						const messages= data.message
-						console.log('gerer')
 						if(status===400 ){
 							messages.forEach((field: any)=>{
 								field.path==='password'&& setPasswordError(true)
@@ -161,8 +157,6 @@ const Login = () => {
 			<Container
 				component='main'
 				sx={{
-					// ml: '3.25rem',
-					// mr:'3.25',
 					height: '100vh',
 					width: '100vw',
 					pt: '2rem',

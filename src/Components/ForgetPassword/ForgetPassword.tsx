@@ -9,10 +9,10 @@ import Topography from '@mui/material/Typography';
 
 //Regular React imports
 import { useState } from 'react';
-import {SERVER_URL} from '../../Constants/Constants';
+import {SERVER_URL,EMAIL_REGEX} from '../../Constants/Constants';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-
+import notification from '../../config/notificationConfig';
  
 
 
@@ -22,58 +22,64 @@ const ForgetPassword = () => {
 
 	const [userName, setUserName] = useState('');
 	const [success, setSuccess] = useState(false);
-	const [messages, setMessages] = useState('');
+	// const [messages, setMessages] = useState('');
 
 
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (userName.length < 3) {
-			return;
+		const RequestPasswordReset = async () => {
+			
+			try {
+				const requestData = {
+					email: userName,
+				};
+				const response = await axios.post(SERVER_URL, requestData);
+
+				if (response.data.status.ok) {
+					setSuccess(true)
+					notification.info(
+						'Kindly check your email for instructions on your account password reset.'
+					);
+				}
+				
+			} catch (err:any) {
+				if (err) {
+					if (err.response) {
+						const { status, data } = err.response;
+						const messages = data.message;
+						if (status === 400) {
+							messages.forEach((field: any) => {
+								notification.error(field.msg);
+							});
+						} else {
+							notification.error('Server Error');
+						}
+						return;
+					}
+					notification.error('Check connection');
+				}
+				else{
+					notification.error('Check connection')
+				}
+			}
+		}
+
+		if (EMAIL_REGEX.test(userName)) {
+			RequestPasswordReset();
+			setSuccess(true)
 		}
 
 		if (success) {
 			CloseResetPage();
 			return;
 		}
-
-		try {
-			const response = await axios.post(
-				SERVER_URL,
-				JSON.stringify({
-					userName: userName,
-				})
-			);
-			console.log(response?.data);
-
-			if (response.data.status.ok) {
-				setMessages(
-					'Kindly check your email for instructions on your account password reset.'
-				);
-				
-			}
-		} catch (err:any) {
-			// const errors = err as Error | AxiosError;
-			console.log(err);
-			if (!err?.response) {
-				setMessages('Server is Currently Unavailable. Try Again Later.');
-			} else if (err.response?.status === 400) {
-				setMessages('Invalid Username or Password');
-			} else if (err.response?.status === 401) {
-				setMessages('Unauthorized');
-			} else {
-				setMessages('Request Cannot Be Currently Processed. Try Again Later');
-			}
-		}
-		setSuccess(true);
 	};
 
 	const CloseResetPage = () => {
 		setUserName('');
-		// setTimeout(() => {
-			navigate('/')
-		// }, 3000);
+		navigate('/')
 	}
 
 	return (
@@ -93,7 +99,7 @@ const ForgetPassword = () => {
 			<Box
 				sx={{
 					maxWidth: '30.5rem',
-					maxHeight:'20rem',
+					maxHeight: '20rem',
 					border: 1,
 					px: 5,
 					py: 2,
@@ -108,9 +114,11 @@ const ForgetPassword = () => {
 							lineHeight: '1rem',
 							maxWidth: '22.5rem',
 						}}>
-						{messages?'Password reset request has been made.':'Kindly provide your email address for password reset'}
+						{success
+							? 'Password reset request has been made.'
+							: 'Kindly provide your email address for password reset'}
 					</Topography>
-					<Box
+					{/* <Box
 						sx={{
 							width: '100%',
 							height: '2rem',
@@ -136,7 +144,7 @@ const ForgetPassword = () => {
 								{messages}
 							</Box>
 						)}
-					</Box>
+					</Box> */}
 
 					<Box
 						component='form'
@@ -152,11 +160,11 @@ const ForgetPassword = () => {
 							required
 							value={userName}
 							onChange={(e) => setUserName(e.target.value)}
-							error={userName.length > 0 && userName.length < 8}
+							error={userName.length > 0 && !EMAIL_REGEX.test(userName)}
 							helperText={
-								userName.length === 0 || userName.length >= 8
+								userName.length === 0 || !EMAIL_REGEX.test(userName)
 									? ' '
-									: 'Email should be a minimum length of 8 characters'
+									: 'Email is incorrect'
 							}
 							InputLabelProps={{
 								shrink: true,
