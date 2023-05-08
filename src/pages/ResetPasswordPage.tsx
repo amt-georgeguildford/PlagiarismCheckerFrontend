@@ -43,12 +43,13 @@ const ResetPasswordPage = () => {
 				password: password,
 				confirmPassword: confirmPassword
 			}
-				
+				console.log(passwordData)
 			try {
 				const response = await axios.post(SERVER_URL,passwordData );
 
 				// When saved, give person an access token to be saved in localStorage
 				const result = response.data;
+				console.log (result)
 
 				// setSuccess(true);
 				setPassword('');
@@ -121,15 +122,13 @@ const ResetPasswordPage = () => {
 
 			<Box
 				sx={{
-					border: 1,
-					borderRadius: 2,
-					mt: 10,
-					px: 10,
-					pt: 4,
-					pb: 7,
+					border: '0.5px solid #757575',
+					borderRadius: '2rem',
+					px: '3rem',
+					py: '3.5rem',
 					bgcolor: '#ffffff',
-					width: '31rem',
-					height: '34rem',
+					maxwidth: '28.5rem',
+					maxheight: '25.25rem',
 				}}>
 				<Box
 					sx={{
@@ -141,25 +140,23 @@ const ResetPasswordPage = () => {
 						variant='subtitle1'
 						sx={{
 							textAlign: 'center',
-							mt: 2,
-							mb: 1,
-							lineHeight: '1.2rem',
+							lineHeight: '1.19rem',
+							fontSize: '1rem',
 						}}>
 						Create New Password
 					</Topography>
 					<Box
 						component='form'
-						sx={{ mt: 2, mb: 2 }}
-						onSubmit={ handleSubmit }
-					>
+						sx={{ mt: '2.5rem', maxWidth: '21.5rem', maxHeight: '20.25rem' }}
+						onSubmit={handleSubmit}>
 						<TextField
 							fullWidth
 							id='password'
 							name='password'
 							variant='outlined'
 							type='password'
-							label='password'
-							placeholder='New Password'
+							label='New Password'
+							placeholder='Password'
 							autoFocus
 							required
 							value={password}
@@ -168,12 +165,19 @@ const ResetPasswordPage = () => {
 							helperText={
 								password.length === 0 || PWD_REGEX.test(password)
 									? ' '
-									: 'Password should be a minimum of 8 characters with uppercase,lowercase and special character (!,#,$,%,^,*,+,-,_,=,?,@,|)'
+									: 'Password should be at least 8 characters'
 							}
-							InputLabelProps={{
+							InputLabelProps={ {
 								shrink: true,
 							}}
+							
 							margin='normal'
+							sx={{
+								mt: '0rem',
+								mb: '0rem',
+								borderRadius: '0.25rem',
+								bordercolor: '#454545',
+							}}
 						/>
 						<TextField
 							fullWidth
@@ -183,32 +187,37 @@ const ResetPasswordPage = () => {
 							type='password'
 							name='confirmpassword'
 							label='Confirm Password'
-							placeholder='Confirm Password'
+							placeholder='Password'
 							value={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}
 							error={
-								(confirmPassword.length > 0 && !PWD_REGEX.test(password)) ||
+								(confirmPassword.length > 0 && !PWD_REGEX.test(confirmPassword)) ||
 								password !== confirmPassword
 							}
 							helperText={
 								confirmPassword.length === 0 ||
 								(PWD_REGEX.test(confirmPassword) &&
-									password !== confirmPassword)
+									password === confirmPassword)
 									? ' '
-									: 'Passwords do not match.'
+									: 'Passwords incorrect or do not match.'
 							}
 							InputLabelProps={{
 								shrink: true,
 							}}
 							margin='normal'
+							sx={{
+								mt: '2.5rem',
+								mb: '0',
+								borderRadius: '0.25rem',
+								bordercolor: '#454545',
+							}}
 						/>
 						<Button
 							type='submit'
 							fullWidth
 							variant='contained'
 							sx={{
-								mt: 4,
-								mb: 3,
+								mt: '2rem',
 								height: '51px',
 								bgcolor: '#3C5148',
 								borderColor: '#FFFFFF',
