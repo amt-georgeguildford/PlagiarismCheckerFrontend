@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
+import { department as Department } from '../../Constants/Constants';
+import notification from '../../config/notificationConfig';
+import axios from 'axios';
 
 import {
 	SERVER_URL,
@@ -9,9 +12,11 @@ import {
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Container, Box, CssBaseline } from '@mui/material';
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import CssBaseline from '@mui/material/CssBaseline';
+import MenuItem from '@mui/material/MenuItem';
 
-import axios from 'axios';
 
 const StudentRegistation = () => {
 	const [firstName, setFirstName] = useState('');
@@ -20,39 +25,36 @@ const StudentRegistation = () => {
 	const [email, setEmail] = useState('');
 	const [department, setDepartment] = useState('');
 
-	const [errEntries, setErrEntries] = useState(false);
-	const [errResponse, setErrResponse] = useState('');
+	// const [errEntries, setErrEntries] = useState(false);
+	// const [errResponse, setErrResponse] = useState('');
 
-	useEffect(() => {
-		setErrEntries(false);
-		setErrResponse('');
-	}, [lastName, firstName, telNumber, email, department]);
+	// useEffect(() => {
+	// 	setErrEntries(false);
+	// 	setErrResponse('');
+	// }, [lastName, firstName, telNumber, email, department]);
 
 	const ValidateAllDataEntries = () => {
-		if (USER_REGEX.test(lastName)) {
-			setErrEntries(true);
-			return;
+		if (!USER_REGEX.test(lastName)) {
+			// setErrEntries(true);
+			return false;
 		}
 
-		if (USER_REGEX.test(firstName)) {
-			setErrEntries(true);
-			return;
+		if (!USER_REGEX.test(firstName)) {
+			return false;
 		}
 
-		if (TEL_REGEX.test(telNumber)) {
-			setErrEntries(true);
-			return;
+		if (!TEL_REGEX.test(telNumber)) {
+			return false;
 		}
 
-		if (EMAIL_REGEX.test(email)) {
-			setErrEntries(true);
-			return;
+		if (!EMAIL_REGEX.test(email)) {
+			return false;
 		}
 
-		if (EMAIL_REGEX.test(department)) {
-			setErrEntries(true);
-			return;
+		if (department===''){
+			return false;
 		}
+		return true;
 	};
 
 	const ResetInputEntries = () => {
@@ -63,17 +65,8 @@ const StudentRegistation = () => {
 		setDepartment('');
 	};
 
-	const RegisterStudent = (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-
-		ValidateAllDataEntries();
-
-		if (errEntries) {
-			return;
-		}
-
-		/// Place Entries in object format for Saving
-		
 
 		const registerStudent= async ()=>{
 			const entryData = {
@@ -84,27 +77,33 @@ const StudentRegistation = () => {
 				department,
 			};
 			try {
-				const response = await axios.post(SERVER_URL+'api/v1/staff/student', entryData);
-				console.log(response?.data);
+				//retrieve accessToken and add to header file when making post request
+				const response = await axios.post(
+					SERVER_URL + 'api/v1/staff/student',
+					entryData);
 	
-				//Store the token in global API Context, and use when sending
-				// const accessToken = response?.data?.accessToken;
-				setErrResponse('Record Successfully Saved');
-				ResetInputEntries();
-			} catch (err: any) {
-				console.log(err);
-				if (!err?.response) {
-					setErrResponse('No Server Response');
-				} else if (err.response?.status === 400) {
-					setErrResponse('Invalid Username or Password');
-				} else if (err.response?.status === 401) {
-					setErrResponse('Unauthorized');
+				response?.data && ResetInputEntries();
+
+			} catch (err:any) {
+				if (err.response?.status === 400) {
+					err.response?.data?.forEach((field:any) => {
+						field.path === 'lastName';
+						field.path === 'firstName';
+						field.path === 'email';
+						field.path === 'telNumber';
+						field.path === 'department';
+
+						notification.error(field.msg);
+					});
 				} else {
-					setErrResponse('Login Failed');
+					notification.error('Server Error');
 				}
 			}
 		}
-		registerStudent()
+		if (ValidateAllDataEntries()) {
+			registerStudent()
+		}
+		
 	};
 
 	return (
@@ -131,7 +130,7 @@ const StudentRegistation = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					maxWidth: '28.5rem',
-					maxHeight:"43.5rem"
+					maxHeight: '43.5rem',
 				}}>
 				<Box
 					sx={{
@@ -142,7 +141,7 @@ const StudentRegistation = () => {
 					}}>
 					Provide your login details to create student profile
 				</Box>
-				<Box
+				{/* <Box
 					sx={{
 						height: '2rem',
 						width: '100%',
@@ -164,10 +163,10 @@ const StudentRegistation = () => {
 							{errResponse}
 						</Box>
 					)}
-				</Box>
+				</Box> */}
 				<Box
 					component='form'
-					onSubmit={RegisterStudent}
+					onSubmit={handleSubmit}
 					sx={{ maxWidth: '28.5rem', mt: '0.2rem' }}>
 					<TextField
 						fullWidth
@@ -180,7 +179,7 @@ const StudentRegistation = () => {
 						required
 						value={firstName}
 						onChange={(e) => setFirstName(e.target.value)}
-						error={firstName.length > 0 && firstName.length < 3}
+						error={firstName.length > 0 && firstName.length < 2}
 						helperText={
 							firstName.length === 0 || firstName.length >= 2
 								? ' '
@@ -201,11 +200,11 @@ const StudentRegistation = () => {
 						required
 						value={lastName}
 						onChange={(e) => setLastName(e.target.value)}
-						error={lastName.length > 0 && lastName.length < 3}
+						error={lastName.length > 0 && lastName.length < 2}
 						helperText={
 							lastName.length === 0 || lastName.length >= 2
 								? ' '
-								: 'Lastname requires a minimum of 3 Characters'
+								: 'Lastname requires a minimum of 2 Characters'
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -261,20 +260,34 @@ const StudentRegistation = () => {
 						name='department'
 						label='Department'
 						placeholder='Enter Department'
+						select
 						required
 						value={department}
 						onChange={(e) => setDepartment(e.target.value)}
-						error={department.length > 0 && department.length < 3}
-						helperText={
-							department.length === 0 || department.length >= 3
-								? ' '
-								: 'Department must be at least 6 Characters.'
-						}
+						// error={department.length > 0 && department.length < 3}
+						// helperText={
+						// 	department.length === 0 || department.length >= 3
+						// 		? ' '
+						// 		: 'Department must be at least 6 Characters.'
+						// }
 						InputLabelProps={{
 							shrink: true,
 						}}
 						margin='normal'
-					/>
+					>
+						<MenuItem
+							key='i1'
+							value=''>
+							<em>select department</em>
+						</MenuItem>
+						{Department.map((option) => (
+							<MenuItem
+								key={option.id}
+								value={option.id}>
+								{option.name}
+							</MenuItem>
+						))}
+					</TextField>
 					<Button
 						type='submit'
 						fullWidth

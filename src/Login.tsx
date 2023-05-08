@@ -11,13 +11,12 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles'
+
 
 const LoginPix2 = '../LoginPix2.png';
 import { useNavigate } from 'react-router-dom';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-
 
 
 const theme = createTheme({
