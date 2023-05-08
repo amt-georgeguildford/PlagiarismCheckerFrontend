@@ -38,13 +38,14 @@ const ForgetPassword = () => {
 				const response = await axios.post(SERVER_URL, requestData);
 
 				if (response.data.status.ok) {
-					setSuccess(true)
+					// setSuccess(true)
 					notification.info(
 						'Kindly check your email for instructions on your account password reset.'
 					);
 				}
 				
-			} catch (err:any) {
+			} catch (err: any) {
+				// setSuccess(false);
 				if (err) {
 					if (err.response) {
 						const { status, data } = err.response;
@@ -54,14 +55,14 @@ const ForgetPassword = () => {
 								notification.error(field.msg);
 							});
 						} else {
-							notification.error('Server Error');
+							notification.error('Server Error.Request Not Sent.');
 						}
 						return;
 					}
-					notification.error('Check connection');
+					notification.error('Check connection.Request Not Sent.');
 				}
 				else{
-					notification.error('Check connection')
+					notification.error('Check connection.Request Not Sent.')
 				}
 			}
 		}
@@ -114,9 +115,11 @@ const ForgetPassword = () => {
 							lineHeight: '1rem',
 							maxWidth: '22.5rem',
 						}}>
-						{success
+						{/* {success
 							? 'Password reset request has been made.'
-							: 'Kindly provide your email address for password reset'}
+							: 'Kindly provide your email address for password reset'} */}
+
+						Kindly provide your email address for password reset
 					</Topography>
 					{/* <Box
 						sx={{
@@ -162,7 +165,7 @@ const ForgetPassword = () => {
 							onChange={(e) => setUserName(e.target.value)}
 							error={userName.length > 0 && !EMAIL_REGEX.test(userName)}
 							helperText={
-								userName.length === 0 || !EMAIL_REGEX.test(userName)
+								userName.length === 0 || EMAIL_REGEX.test(userName)
 									? ' '
 									: 'Email is incorrect'
 							}
