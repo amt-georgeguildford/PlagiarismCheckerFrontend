@@ -5,6 +5,7 @@ import StudentDashboard from './Components/StudentDashboard/StudentDashboard';
 import LecturerRegistration from './Components/LecturerRegistration/LecturerRegistration';
 import StudentRegistation from './Components/StudentRegistration/StudentRegistation';
 import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
+import MissingPage from './pages/MissingPage';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ResetPasswordPage from './pages/ResetPasswordPage';
@@ -51,7 +52,7 @@ function App() {
 					<Route path='/reset' element={<ResetPasswordPage />}/>
 					<Route
 						path='*'
-						element={<AdminDashboard />}
+						element={<MissingPage />}
 					/>
 				</Routes>
 			</Router>
