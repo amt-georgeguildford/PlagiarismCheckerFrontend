@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext} from 'react';
+import { department as Department } from '../../Constants/Constants';
+import notification from '../../config/notificationConfig';
+import axios from 'axios';
 
 import {
 	SERVER_URL,
@@ -9,50 +12,54 @@ import {
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Container, Box, CssBaseline } from '@mui/material';
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import CssBaseline from '@mui/material/CssBaseline';
+import MenuItem from '@mui/material/MenuItem';
+import { NewUserFormChangeStudent } from '../../utilis/Types';
+import { InitialContext } from '../../context/context';
 
-import axios from 'axios';
 
 const StudentRegistation = () => {
+	const [serverError, setServerError] = useState({} as NewUserFormChangeStudent)
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [telNumber, setTelNumber] = useState('');
 	const [email, setEmail] = useState('');
 	const [department, setDepartment] = useState('');
 
-	const [errEntries, setErrEntries] = useState(false);
-	const [errResponse, setErrResponse] = useState('');
+	const [formChange, setFormChange] = useState({} as NewUserFormChangeStudent)
+	const {departments} = useContext(InitialContext)
+	// const [errEntries, setErrEntries] = useState(false);
+	// const [errResponse, setErrResponse] = useState('');
 
-	useEffect(() => {
-		setErrEntries(false);
-		setErrResponse('');
-	}, [lastName, firstName, telNumber, email, department]);
+	// useEffect(() => {
+	// 	setErrEntries(false);
+	// 	setErrResponse('');
+	// }, [lastName, firstName, telNumber, email, department]);
 
 	const ValidateAllDataEntries = () => {
-		if (USER_REGEX.test(lastName)) {
-			setErrEntries(true);
-			return;
+		if (!USER_REGEX.test(lastName)) {
+			// setErrEntries(true);
+			return false;
 		}
 
-		if (USER_REGEX.test(firstName)) {
-			setErrEntries(true);
-			return;
+		if (!USER_REGEX.test(firstName)) {
+			return false;
 		}
 
-		if (TEL_REGEX.test(telNumber)) {
-			setErrEntries(true);
-			return;
+		if (!TEL_REGEX.test(telNumber)) {
+			return false;
 		}
 
-		if (EMAIL_REGEX.test(email)) {
-			setErrEntries(true);
-			return;
+		if (!EMAIL_REGEX.test(email)) {
+			return false;
 		}
 
-		if (EMAIL_REGEX.test(department)) {
-			setErrEntries(true);
-			return;
+		if (department==='select department'){
+			return false;
 		}
+		return true;
 	};
 
 	const ResetInputEntries = () => {
@@ -63,17 +70,8 @@ const StudentRegistation = () => {
 		setDepartment('');
 	};
 
-	const RegisterStudent = (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-
-		ValidateAllDataEntries();
-
-		if (errEntries) {
-			return;
-		}
-
-		/// Place Entries in object format for Saving
-		
 
 		const registerStudent= async ()=>{
 			const entryData = {
@@ -84,27 +82,51 @@ const StudentRegistation = () => {
 				department,
 			};
 			try {
-				const response = await axios.post(SERVER_URL+'api/v1/staff/student', entryData);
-				console.log(response?.data);
+				//retrieve accessToken and add to header file when making post request
+				const response = await axios.post(
+					SERVER_URL + 'api/v1/staff/student',
+					entryData);
 	
-				//Store the token in global API Context, and use when sending
-				// const accessToken = response?.data?.accessToken;
-				setErrResponse('Record Successfully Saved');
-				ResetInputEntries();
-			} catch (err: any) {
-				console.log(err);
-				if (!err?.response) {
-					setErrResponse('No Server Response');
-				} else if (err.response?.status === 400) {
-					setErrResponse('Invalid Username or Password');
-				} else if (err.response?.status === 401) {
-					setErrResponse('Unauthorized');
-				} else {
-					setErrResponse('Login Failed');
+					setFormChange({firstname: false, lastname: false, department: false, email:false,number: false})	
+					console.log(response)
+					ResetInputEntries()
+					notification.success('New Lecture Account Created')
+
+			} catch (err:any) {
+				console.log(err)
+				if(err){
+					console.log(err)
+					if(err.response){
+						const {status, data}= err.response;
+						const messages= data.message
+						console.log('gerer')
+						if(status===400 ){
+							messages.forEach((field: any)=>{
+								field.path==='firstname'&& setServerError({...serverError, firstname: true});
+								field.path==='lastname'&& setServerError({...serverError, lastname: true})
+								field.path==='email' && setServerError({...serverError, email: true})
+								field.path==='phone_number' && setServerError({...serverError, number: true})
+								field.path==='department'&& setServerError({...serverError, department: true})
+								notification.error(field.msg)
+							})
+						}
+						else{
+							notification.error('Server Error')
+						}
+						return
+					}
+					notification.error('Check connection')
+					
+				}
+				else{
+					notification.error('Check connection')
 				}
 			}
 		}
-		registerStudent()
+		if (ValidateAllDataEntries()) {
+			registerStudent()
+		}
+		
 	};
 
 	return (
@@ -131,7 +153,7 @@ const StudentRegistation = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					maxWidth: '28.5rem',
-					maxHeight:"43.5rem"
+					maxHeight: '43.5rem',
 				}}>
 				<Box
 					sx={{
@@ -142,7 +164,7 @@ const StudentRegistation = () => {
 					}}>
 					Provide your login details to create student profile
 				</Box>
-				<Box
+				{/* <Box
 					sx={{
 						height: '2rem',
 						width: '100%',
@@ -164,10 +186,10 @@ const StudentRegistation = () => {
 							{errResponse}
 						</Box>
 					)}
-				</Box>
+				</Box> */}
 				<Box
 					component='form'
-					onSubmit={RegisterStudent}
+					onSubmit={handleSubmit}
 					sx={{ maxWidth: '28.5rem', mt: '0.2rem' }}>
 					<TextField
 						fullWidth
@@ -179,12 +201,11 @@ const StudentRegistation = () => {
 						autoFocus
 						required
 						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-						error={firstName.length > 0 && firstName.length < 3}
+						onChange={(e) => {setFirstName(e.target.value); setFormChange({...formChange, firstname: true})}}
+						error={(firstName.length === 0  && formChange.firstname) || serverError.firstname}
 						helperText={
-							firstName.length === 0 || firstName.length >= 2
-								? ' '
-								: 'FirstName requires a minimum of 2 Characters'
+							(firstName.length ==0 && formChange.firstname)?
+								 'Firstname field is empty ': " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -200,12 +221,11 @@ const StudentRegistation = () => {
 						placeholder='LastName'
 						required
 						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						error={lastName.length > 0 && lastName.length < 3}
+						onChange={(e) => {setLastName(e.target.value); setFormChange({...formChange, lastname: true})}}
+						error={(lastName.length === 0 && formChange.lastname) || serverError.lastname }
 						helperText={
-							lastName.length === 0 || lastName.length >= 2
-								? ' '
-								: 'Lastname requires a minimum of 3 Characters'
+							(lastName.length === 0 && formChange.lastname) ?
+								 'Lastname field is empty ' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -221,12 +241,11 @@ const StudentRegistation = () => {
 						placeholder='Email'
 						required
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						error={email.length > 0 && !EMAIL_REGEX.test(email)}
+						onChange={(e) => {setEmail(e.target.value); setFormChange({...formChange, email: true})}}
+						error={ (!EMAIL_REGEX.test(email) && formChange.email)|| serverError.email}
 						helperText={
-							email.length === 0 || EMAIL_REGEX.test(email)
-								? ' '
-								: 'Email entered is incorrect.'
+							!EMAIL_REGEX.test(email) && formChange.email
+								? 'Email incorrect.' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -242,12 +261,11 @@ const StudentRegistation = () => {
 						placeholder='Number'
 						required
 						value={telNumber}
-						onChange={(e) => setTelNumber(e.target.value)}
-						error={telNumber.length > 0 && !TEL_REGEX.test(telNumber)}
+						onChange={(e) => {setTelNumber(e.target.value); setFormChange({...formChange, number:true})}}
+						error={(!TEL_REGEX.test(telNumber) && formChange.number) || serverError.number}
 						helperText={
-							telNumber.length === 0 || TEL_REGEX.test(telNumber)
-								? ' '
-								: 'Telephone Number must be at least 10 digits.'
+							!TEL_REGEX.test(telNumber) && formChange.number
+								? 'Telephone Number must be at least 10 digits.' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -261,20 +279,35 @@ const StudentRegistation = () => {
 						name='department'
 						label='Department'
 						placeholder='Enter Department'
+						select
 						required
 						value={department}
-						onChange={(e) => setDepartment(e.target.value)}
-						error={department.length > 0 && department.length < 3}
+						onChange={(e) => {setDepartment(e.target.value); setFormChange({...formChange, department: true})}}
+						error={(department ==='select department' && formChange.department) || serverError.department}
 						helperText={
-							department.length === 0 || department.length >= 3
-								? ' '
-								: 'Department must be at least 6 Characters.'
+							department=== 'select department'?
+								'Select a department': " "
 						}
 						InputLabelProps={{
 							shrink: true,
 						}}
 						margin='normal'
-					/>
+					>
+						<MenuItem
+							key='i1'
+							value=''>
+							<em>select department</em>
+						</MenuItem>
+						{departments.map((option) => (
+							<MenuItem
+								key={option.id}
+								value={option.id}
+								onChange={()=>setDepartment(option
+								.id)}>
+								{option.name}
+							</MenuItem>
+						))}
+					</TextField>
 					<Button
 						type='submit'
 						fullWidth
