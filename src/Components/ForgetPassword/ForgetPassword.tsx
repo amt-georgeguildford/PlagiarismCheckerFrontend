@@ -188,13 +188,13 @@ const ForgetPassword = () => {
 										mb: 4,
 									}}>
 									<ManageAccountsIcon
-										sx={{ color: 'blue', fontSize: '2rem', ml:1 }}
+										sx={{ color: 'blue', fontSize: '2rem' }}
 									/>
 									<Topography variant='h6' >{userName}</Topography>
 
 									{success ? (
 										<VerifiedUserSharpIcon
-											sx={{ color: 'green', fontSize: '2rem' }}
+											sx={{ color: 'green', fontSize: '2rem',mx:'0.05rem',maxWidth:'19rem' }}
 										/>
 									) : (
 										<HighlightOffIcon
