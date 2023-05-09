@@ -48,3 +48,10 @@ export type UserAccount={
     isverified: boolean
 
 }
+
+export type DatabaseStat= {
+    lecturers: number,
+    students: number,
+    assignments: number,
+    submissions: number
+}

@@ -45,7 +45,6 @@ const ForgetPassword = () => {
 					SERVER_URL+'auth/reset/password/',
 					requestBody
 				);
-				notification.success('Request for password reset successful')
 				// if (response.data.status.ok) {
 				// 	setMessages(
 				// 		'Kindly check your email for instructions on your account password reset.'

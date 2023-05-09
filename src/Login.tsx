@@ -72,7 +72,7 @@ const Login = () => {
 			if (userAccount.isverified) {
 				//Confirm the user and redirect
 				if (userAccount.role === 'ADMIN') {
-					navigate('/adminboard');
+					navigate('/dashboard/admin');
 				} else if (userAccount.role === 'LECTURER') {
 					navigate('/lecturerboard');
 				} else if (userAccount.role === 'STUDENT') {
@@ -113,7 +113,7 @@ const Login = () => {
 					localStorage.setItem('accessToken', result.tokens.accessToken);
 					notification.success("Login Successful")
 					if (result.user.role === 'ADMIN') {
-						navigate('/adminboard');
+						navigate('/dashboard/admin');
 					} else if (result.user.role === 'LECTURER') {
 						navigate('/lecturerboard');
 					} else if (result.user.role === 'STUDENT') {

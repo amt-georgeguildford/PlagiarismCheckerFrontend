@@ -7,36 +7,46 @@ import Box from '@mui/material/Box'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import {paperStyle,gridStyle,modalStyle,modalBox,typoStyle,btnBagStyle,btnStyle} from '../../Constants/Constants'
+import {paperStyle,gridStyle,modalStyle,modalBox,typoStyle,btnBagStyle,btnStyle, SERVER_URL} from '../../Constants/Constants'
+import axios from 'axios'
 
 
-const Logout = () => {
-	const [loggedOut, setloggedOut] = useState(false)
-	const [modal, setModal] = useState(true)
+const Logout = ({showModal,setShowModal}: {showModal: boolean,setShowModal:React.Dispatch<React.SetStateAction<boolean>>}) => {
 	
 	const navigate=useNavigate()
 
 	const handleUserLogout = () => {
-		setloggedOut(true);
-		localStorage.removeItem('accessToken')
-		navigate('/')
+		// localStorage.removeItem('accessToken')
+		// localStorage.removeItem('refreshToken')
+		console.log(localStorage.getItem('accessToken'))
+		const logoutFunc= async ()=>{
+			try {
+				const signOut= await axios.post(SERVER_URL+'auth/logout', {
+					headers:{
+						"Authorization": `Bearer ${localStorage.getItem('accessToken')}`
+					}
+					
+				})
+				console.log(signOut.data)
+			} catch (error) {
+				console.log(error)
+				// localStorage.removeItem('accessToken')
+				// localStorage.removeItem('refreshToken')
+				navigate('/')
+			}
+		}
+		logoutFunc()
 	}
 
-	const cancelUserLogout = () => {
-		if (!loggedOut) {
-			setloggedOut(false)
-			setModal(false)
-		}
-		
-	}
 	
   return (
 		<Container
-			sx={modal ? { ...modalStyle, minWidth: '100vw' } : { ...gridStyle }}
-			onClick={cancelUserLogout}>
+			sx={showModal ? { ...modalStyle, minWidth: '100vw' } : { ...gridStyle }}
+			onClick={()=>setShowModal(false)}>
 			<Paper
 				elevation={10}
-				style={modal ? modalBox : paperStyle}>
+				style={showModal ? modalBox : paperStyle}
+				onClick={(e)=>e.stopPropagation()}>
 				<Typography
 					variant='h4'
 					component='h5'
@@ -51,14 +61,14 @@ const Logout = () => {
 				<Box sx={btnBagStyle}>
 					<Button
 						variant='contained'
-						sx={btnStyle}
+						sx={{...btnStyle, backgroundColor: 'red'}}
 						onClick={handleUserLogout}>
 						Confirm
 					</Button>
 					<Button
 						variant='contained'
 						sx={{ ...btnStyle, ml: '1.5rem' }}
-						onClick={cancelUserLogout}>
+						onClick={()=>setShowModal(false)}>
 						Cancel
 					</Button>
 				</Box>

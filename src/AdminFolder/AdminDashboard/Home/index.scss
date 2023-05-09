@@ -1,0 +1,36 @@
+@import '../../Styles/styles.scss';
+
+.flex{
+   
+    .first-page {
+        font-family: 'Verdana';
+        padding: 1rem 0;
+        background: #E9ECED;
+        margin: 1rem;
+        box-shadow: 0px 4px 24px rgba(191, 191, 191, 0.25);
+        border-radius: 16px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        
+        .page-items {
+            padding: 0 1rem;
+            &:not(&:first-child){
+                border-left: 1px solid #3C5148;
+            }
+            small{
+                color: #757575;
+            }
+        }
+    }
+    
+    .null-work {
+        margin: 0 35%;
+        text-align: center;
+        img{
+            margin-bottom: -1rem;
+        }
+        small{
+            color: #C5C5C5;
+        }
+    }
+}

@@ -1,0 +1,88 @@
+@import '../../Styles/styles.scss';
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: $background-color;
+    box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.05);
+    padding-bottom: 3rem;
+    .nav-brand{
+        font-family: 'Mohave';
+        padding: 1.5rem 1.5rem;
+        font-size: 3rem;
+    }
+    .right-icon{
+        vertical-align: middle;
+        margin-left: 10px;
+    };
+    .left-icon{
+        vertical-align: middle;
+        padding-right: 1rem;
+    }
+}
+
+.side-bar-menu{
+    .avatar{
+        display: flex;
+        align-items: center;
+        
+        .avatar-img{
+
+            padding: 0 16px;
+        }
+        p{
+            font-family: 'Verdana';
+            font-size: 1rem;
+        }
+        select {
+            background: transparent;
+        }
+    }
+
+}
+
+.dashboard-menu{
+    margin-top: 3rem;
+    padding-left: 0;
+    .dashboard-menu-item {
+        width: 100%;
+        a{
+            padding: 1rem;
+            color: grey;
+            display: block;
+            .icon{
+                font-size: 20px;
+            }
+            
+            &.active{
+                background-color: #6B8E4E;
+                color: #ffffff;
+                border-radius: 5px;       
+            }
+    
+            &:hover{
+                background-color: #6B8E4E;
+                color: #ffffff;
+                border-radius: 5px;
+            }
+            
+            
+        }
+    }
+}
+
+
+.siderbar-bottom{
+    color: grey;
+    width: 100%;
+    padding-left: 3rem;
+    li {
+        &:hover{
+            color: initial;
+        }
+        &:first-child{
+            margin-bottom: 1rem;
+        }
+    }
+}

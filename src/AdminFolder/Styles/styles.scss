@@ -1,0 +1,70 @@
+$primary-color: #6B8E4E;
+$secondary-color: #335667;
+$footer-color: #3C5148;
+$background-color: #E9ECED;
+$font-family: Verdana;
+$font-heading: 'Mohave', sans-serif;
+$font-heading1: 'Exo';
+$font-weight-normal: 400;
+$font-weight-bold: 600;
+$border-radius: 16px;
+
+$nav-height: 80px;
+$nav-shadow: 0px -27px 82px rgba(0, 0, 0, 0.1), 
+            0px -11.28px 38.5556px rgba(0, 0, 0, 0.1), 
+            0px -6.0308px 22.41px rgba(0, 0, 0, 0.08), 
+            0px -3.38082px 13.3859px rgba(0, 0, 0, 0.08), 
+            0px -1.79553px 7.53777px rgba(0, 0, 0, 0.05), 
+            0px -0.747159px 3.3288px rgba(0, 0, 0, 0.04);
+
+$btn-outline: none;
+$btn-border: none;
+$btn-cursor: pointer;
+
+.btn{
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .icon{
+    vertical-align:bottom;
+  }
+
+  li{
+    list-style: none;
+  }
+
+  button{
+    cursor: pointer;
+    outline: none;
+    border: none;
+    display: inline-block;
+    background-color: transparent;
+  }
+
+  .icon{
+    vertical-align: middle;
+  }
+  select{
+    outline: none;
+    border: none;
+  }
+
+  input{
+    outline: none;
+  }
+
+  a{
+    text-decoration: none;
+  }
+
+.modal{
+  position: absolute;
+  top: 0;
+  
+}
+body{
+  margin: 0;
+  padding: 0;
+}

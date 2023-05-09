@@ -1,0 +1,34 @@
+.btn {
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.icon {
+  vertical-align: bottom;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  display: inline-block;
+  background-color: transparent;
+}
+
+.icon {
+  vertical-align: middle;
+}
+
+select {
+  outline: none;
+  border: none;
+}
+
+input {
+  outline: none;
+}/*# sourceMappingURL=styles.css.map */
