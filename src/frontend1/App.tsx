@@ -1,34 +1,31 @@
-import React from 'react';
-import './App.css';
-import HomePage from './HomePage/HomePage';
-import TryPage from './TryPage/TryPage';
-// import Sidebar from './components/Waiting/Sidebar/Sidebar';
-// import Headers from './components/Waiting/Headers';
-// import Query from './components/Waiting/Query';
-// import Home from './Page/Home';
-// import Navbar from '../src/NavBar/NavBar';
-// import Header from '../src/Header/Header';
-// import Heros from '../src/Heros/Heros';
-// import UploadSection from '../src/UploadSection/UploadSection';
-
-
-
+import { useState } from 'react'
+import './App.css'
+import AdminDashboard from './AdminDashboard/AdminDashboard'
+import {Routes, Route, BrowserRouter as Router,} from 'react-router-dom'
+import Home from './AdminDashboard/Home/Home'
+import Departments from './AdminDashboard/Departments/Departments'
+import Lecturers from './AdminDashboard/Lecturers/Lecturers'
+import Statistics from './AdminDashboard/Statistics/Statistics'
+import MainHome from './MainHome'
 function App() {
+  
 
   return (
-    <div className="App">
+    <>
+        <Router>
+          <Routes>
+            <Route path='/' element={<MainHome />}/>
+            <Route path='/dashboard' element={<AdminDashboard />}>
+              <Route path='admin' element={<Home />} />
+              <Route path='departments' element={<Departments />} />
+              <Route path='lecturers' element={<Lecturers />} />
+              <Route path='statistics' element={<Statistics />} />
 
-      <HomePage/>
-      {/* <Navbar/>
-      <Heros/>
-      <Header />
-      <UploadSection/> */}
-        {/* <Headers />
-        <Query /> */}
-         {/* <Home /> */}
-         {/* <Sidebar /> */}
-         <TryPage />
-    </div>
+            </Route>
+          </Routes>
+        </Router>
+        
+    </>
   )
 }
 
