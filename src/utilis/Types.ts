@@ -29,3 +29,10 @@ export type NewUserFormChange={
     qualification: boolean
     department: boolean
 }
+export type NewUserFormChangeStudent={
+    firstname: boolean
+    lastname: boolean
+    email: boolean
+    number: boolean
+    department: boolean
+}
