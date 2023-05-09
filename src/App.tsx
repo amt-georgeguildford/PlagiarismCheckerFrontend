@@ -6,6 +6,7 @@ import LecturerRegistration from './Components/LecturerRegistration/LecturerRegi
 import StudentRegistation from './Components/StudentRegistration/StudentRegistation';
 import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
 import MissingPage from './pages/MissingPage';
+import ServerErrorMessage from './pages/ServerMessages';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ResetPasswordPage from './pages/ResetPasswordPage';
@@ -49,7 +50,14 @@ function App() {
 						path='/newstudent'
 						element={<StudentRegistation />}
 					/>
-					<Route path='/reset' element={<ResetPasswordPage />}/>
+					<Route
+						path='/reset'
+						element={<ResetPasswordPage />}
+					/>
+					<Route
+						path='/servermessage'
+						element={<ServerErrorMessage />}
+					/>
 					<Route
 						path='*'
 						element={<MissingPage />}
