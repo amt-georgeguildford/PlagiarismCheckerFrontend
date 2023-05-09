@@ -1,12 +1,12 @@
 import Login from './Login';
-import AdminDashboard from './Components/AdminDashboard/AdminDashBoard';
+// import AdminDashboard from './Components/AdminDashboard/AdminDashBoard';
 import Lecturerdashboard from './Components/LecturerDashboard/LecturerDashboard';
 import StudentDashboard from './Components/StudentDashboard/StudentDashboard';
 import LecturerRegistration from './Components/LecturerRegistration/LecturerRegistration';
 import StudentRegistation from './Components/StudentRegistration/StudentRegistation';
 import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
 
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 
 import { ToastContainer } from 'react-toastify';
@@ -14,9 +14,14 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
-import { retrieveaccessToken } from './utilis/sessionToken';
 import { SERVER_URL } from './Constants/Constants';
 import { InitialContext } from './context/context';
+import AdminDashboard from './AdminFolder/AdminDashboard/AdminDashboard';
+import Home from './AdminFolder/AdminDashboard/Home/Home';
+import Departments from './AdminFolder/AdminDashboard/Departments/Departments';
+import Lecturers from './AdminFolder/AdminDashboard/Lecturers/Lecturers';
+import Statistics from './AdminFolder/AdminDashboard/Statistics/Statistics';
+
 
 function App() {
 	const {setUserVerified,setUserAccount} = useContext(InitialContext)
@@ -47,12 +52,19 @@ function App() {
 		<>
 			<Router>
 				<Routes>
+					<Route path='/dashboard' element={<AdminDashboard />}>
+						<Route path='admin' element={<Home />} />
+						<Route path='departments' element={<Departments />} />
+						<Route path='lecturers' element={<Lecturers />} />
+						<Route path='statistics' element={<Statistics />} />
+
+					</Route>
 					<Route
 						path='/'
 						element={<Login />}
 					/>
 
-					<Route
+					{/* <Route
 						path='/lostpassword'
 						element={<ForgetPassword />}
 					/>
@@ -77,11 +89,11 @@ function App() {
 						path='/newstudent'
 						element={<StudentRegistation />}
 					/>
-					<Route path='/reset/:id' element={<ResetPasswordPage />}/>
-					<Route
+					<Route path='/reset/:id' element={<ResetPasswordPage />}/> */}
+					{/* <Route
 						path='*'
 						element={<AdminDashboard />}
-					/>
+					/> */}
 				</Routes>
 			</Router>
 			<ToastContainer />

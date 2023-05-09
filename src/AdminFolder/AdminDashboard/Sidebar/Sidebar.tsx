@@ -67,8 +67,10 @@ const Sidebar = () => {
             <span className='icon right-icon'><CiSettings /></span>
           </li>
           <li>
-            Log out
-            <span className='icon right-icon'><SlLogout /></span>
+            <button>
+              Log out
+              <span className='icon right-icon'><SlLogout /></span>
+            </button>
           </li>
         </ul>
     </div>
