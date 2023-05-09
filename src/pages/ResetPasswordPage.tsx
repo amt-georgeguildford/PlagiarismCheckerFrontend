@@ -20,6 +20,8 @@ const ResetPasswordPage = () => {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
+	const [passwordChange, setPasswordChange] = useState(false)
+	const [confirmPaswordChange, setConfirmPaswordChange] = useState(false)
 	// const [errorMsg, setErrorMsg] = useState('');
 	// const [success, setSuccess] = useState(true);
 
@@ -160,12 +162,11 @@ const ResetPasswordPage = () => {
 							autoFocus
 							required
 							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							error={password.length > 0 && PWD_REGEX.test(password) === false}
+							onChange={(e) => {setPassword(e.target.value); setPasswordChange(true)}}
+							error={(password.length ==0 || !PWD_REGEX.test(password)) && passwordChange}
 							helperText={
-								password.length === 0 || PWD_REGEX.test(password)
-									? ' '
-									: 'Password should be at least 8 characters'
+								(password.length === 0 || !PWD_REGEX.test(password)) && passwordChange?
+									'Password should be at least 8 characters': " "
 							}
 							InputLabelProps={ {
 								shrink: true,
@@ -189,17 +190,15 @@ const ResetPasswordPage = () => {
 							label='Confirm Password'
 							placeholder='Password'
 							value={confirmPassword}
-							onChange={(e) => setConfirmPassword(e.target.value)}
+							onChange={(e) =>{ setConfirmPassword(e.target.value); setConfirmPaswordChange(true)}}
 							error={
-								(confirmPassword.length > 0 && !PWD_REGEX.test(confirmPassword)) ||
-								password !== confirmPassword
+								
+								password !== confirmPassword && confirmPaswordChange
 							}
 							helperText={
-								confirmPassword.length === 0 ||
-								(PWD_REGEX.test(confirmPassword) &&
-									password === confirmPassword)
-									? ' '
-									: 'Passwords incorrect or do not match.'
+								
+									password !== confirmPassword && confirmPaswordChange?
+									'Passwords incorrect or do not match.': ""
 							}
 							InputLabelProps={{
 								shrink: true,

@@ -37,14 +37,17 @@ const theme = createTheme({
 });
 
 //Regular React imports
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PWD_REGEX, SERVER_URL} from './Constants/Constants';
 import axios from 'axios';
 import notification from './config/notificationConfig';
+import { InitialContext } from './context/context';
 
 
 const Login = () => {
 	const navigate = useNavigate();
+
+	const [isLoading, setIsLoading] = useState(true)
 	const [userName, setUserName] = useState('');
 	const [password, setPassword] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
@@ -58,32 +61,34 @@ const Login = () => {
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const handleMouseDownPassword = () => setShowPassword((show) => !show);
 
-
+	const {userVerified,userAccount}= useContext(InitialContext)
 	useEffect(() => {
 		setInValidEntry(false);
 		setErrorMsg('');
 	}, [password, userName]);
 
+	useEffect(()=>{
+		if(userVerified){
+			if (userAccount.isverified) {
+				//Confirm the user and redirect
+				if (userAccount.role === 'ADMIN') {
+					navigate('/adminboard');
+				} else if (userAccount.role === 'LECTURER') {
+					navigate('/lecturerboard');
+				} else if (userAccount.role === 'STUDENT') {
+					navigate('/studentboard');
+				}
+				
+			}
+		}
+		else{
+			setIsLoading(false)
+		}
+	},[userVerified, userAccount])
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		// if (
-		// 	userName.length >= 8 &&
-		// 	PWD_REGEX.test(password)
-		// ) {
-		// 	console.log('pass')
-		// 	setErrorMsg('');
-		// } else {
-		// 	console.log('pads')
-		// 	setErrorMsg('Invalid UserName or Password');
-		// }
-
-		// if (errorMsg) {
-		// 	console.log('dsgsf')
-		// 	setInValidEntry(true);
-		// 	return;
-		// }
 
 		const login= async ()=>{
 			try {
@@ -154,210 +159,215 @@ const Login = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Container
-				component='main'
-				sx={{
-					height: '100vh',
-					width: '100vw',
-					pt: '2rem',
-					pb: '5rem',
-					pl: '2.25rem',
-					pr: '8rem',
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}>
-				<CssBaseline />
-
-				<Grid
-					container
-					spacing='7rem'
-					direction={'row'}
-					sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-					<Grid
-						item
-						xs='auto'
-						sx={{ display: 'flex', justifyContent: 'start' }}>
-						<Box>
-							<Topography
-								component='h1'
-								sx={{ fontSize: '2.5rem', mb: '2rem', textAlign: 'center' }}>
-								Welcome!
-							</Topography>
-
-							<img
-								src={LoginPix2}
-								alt='User Login'
-							/>
-						</Box>
-					</Grid>
-					<Grid item>
-						<Box
+			{
+				!isLoading &&
+						(
+							<Container
+							component='main'
 							sx={{
-								border: 1,
-								borderRadius: 2,
-								mt: 11,
-								px: 5,
-								pt: 5,
-								pb: 5,
-								bgcolor: '#ffffff',
-								width: '33rem',
+								height: '100vh',
+								width: '100vw',
+								pt: '2rem',
+								pb: '5rem',
+								pl: '2.25rem',
+								pr: '8rem',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
 							}}>
-							<Box
-								sx={{
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}>
-								<Topography
-									component='h1'
-									variant='subtitle2'
-									sx={{
-										textAlign: 'center',
-										mb: 3,
-										lineHeight: '1.2rem',
-										maxWidth: '22.5rem',
-									}}>
-									Log In
-								</Topography>
-								<Topography
-									variant='subtitle1'
-									sx={{
-										textAlign: 'center',
-										mt: 1.5,
-										lineHeight: '1.2rem',
-										maxWidth: '22.5rem',
-									}}>
-									Provide your login details to access your account
-								</Topography>
-								<Box
-									sx={{
-										width: '100%',
-										height: '2rem',
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center',
-									}}>
-									{inValidEntry && (
-										<Box
-											component='span'
-											sx={{
-												color: 'red',
-												fontSize: '1rem',
-												fontWeight: 400,
-												mt: '0.8rem',
-												width: '100%',
-												height: '2rem',
-												textAlign: 'center',
-											}}>
-											{errorMsg}
-										</Box>
-									)}
-								</Box>
+							<CssBaseline />
 
-								<Box
-									component='form'
-									sx={{ mt: 2, maxWidth: '22.5rem' }}
-									onSubmit={handleSubmit}>
-									<TextField
-										sx={{ maxWidth: '22.5rem' }}
-										fullWidth
-										id='email'
-										name='email'
-										label='Email or ID'
-										placeholder='Email or ID'
-										autoFocus
-										required
-										value={userName}
-										onChange={(e) => {setUserName(e.target.value); setUserNameChange(true)}}
-										error={(userNameChange && userName.length==0 )|| userNameError}
-										helperText={
-											userName.length ===0 && userNameChange?
-												'Email or ID should not be empty' : " "
-										}
-										InputLabelProps={{
-											shrink: true,
-										}}
-										margin='dense'
-									/>
-									<TextField
-										sx={{ mt: '1.5rem', maxWidth: '22.5rem' }}
-										fullWidth
-										id='password'
-										variant='outlined'
-										required
-										type={showPassword ? 'text' : 'password'}
-										name='password'
-										label='Password'
-										placeholder='Password'
-										value={password}
-										onChange={(e) => {setPassword(e.target.value); setPasswordChange(true)}}
-										error={
-											(passwordChange &&  !PWD_REGEX.test(password)) || passwordError
-										}
-										helperText={
-											(( !PWD_REGEX.test(password)) && passwordChange)?
-												'Password should be a minimum of 8 characters with uppercase,lowercase and special character (!,#,$,%,^,*,+,-,_,=,?,@,|)': " "
-										}
-										InputLabelProps={{
-											shrink: true,
-										}}
-										InputProps={{
-											endAdornment: (
-												<InputAdornment position='end'>
-													<IconButton
-														// aria-label='toggle password visibility'
-														onClick={handleClickShowPassword}
-														onMouseDown={handleMouseDownPassword}>
-														{showPassword ? <Visibility /> : <VisibilityOff />}
-													</IconButton>
-												</InputAdornment>
-											),
-										}}
-										margin='normal'
-									/>
-									<Grid
-										container
-										sx={{ mt: 0.75 }}>
-										<Grid
-											item
-											xs></Grid>
-										<Grid
-											item
-											xs
-											sx={{ display: 'flex', justifyContent: 'end' }}>
-											<Link
-												href='/lostpassword'
-												underline='hover'
-												sx={{
-													textDecoration: 'none',
-													fontSize: '16',
-													color: 'black'
-												}}>
-												Forgot Password
-											</Link>
-										</Grid>
-									</Grid>
+							<Grid
+								container
+								spacing='7rem'
+								direction={'row'}
+								sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+								<Grid
+									item
+									xs='auto'
+									sx={{ display: 'flex', justifyContent: 'start' }}>
+									<Box>
+										<Topography
+											component='h1'
+											sx={{ fontSize: '2.5rem', mb: '2rem', textAlign: 'center' }}>
+											Welcome!
+										</Topography>
 
-									<Button
-										type='submit'
-										fullWidth
-										variant='contained'
+										<img
+											src={LoginPix2}
+											alt='User Login'
+										/>
+									</Box>
+								</Grid>
+								<Grid item>
+									<Box
 										sx={{
-											mt: 4,
-											height: '51px',
-											bgcolor: '#3C5148',
-											borderColor: '#FFFFFF',
-											textTransform: 'none',
+											border: 1,
+											borderRadius: 2,
+											mt: 11,
+											px: 5,
+											pt: 5,
+											pb: 5,
+											bgcolor: '#ffffff',
+											width: '33rem',
 										}}>
-										Log in
-									</Button>
-								</Box>
-							</Box>
-						</Box>
-					</Grid>
-				</Grid>
-			</Container>
+										<Box
+											sx={{
+												display: 'flex',
+												flexDirection: 'column',
+												alignItems: 'center',
+											}}>
+											<Topography
+												component='h1'
+												variant='subtitle2'
+												sx={{
+													textAlign: 'center',
+													mb: 3,
+													lineHeight: '1.2rem',
+													maxWidth: '22.5rem',
+												}}>
+												Log In
+											</Topography>
+											<Topography
+												variant='subtitle1'
+												sx={{
+													textAlign: 'center',
+													mt: 1.5,
+													lineHeight: '1.2rem',
+													maxWidth: '22.5rem',
+												}}>
+												Provide your login details to access your account
+											</Topography>
+											<Box
+												sx={{
+													width: '100%',
+													height: '2rem',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+												}}>
+												{inValidEntry && (
+													<Box
+														component='span'
+														sx={{
+															color: 'red',
+															fontSize: '1rem',
+															fontWeight: 400,
+															mt: '0.8rem',
+															width: '100%',
+															height: '2rem',
+															textAlign: 'center',
+														}}>
+														{errorMsg}
+													</Box>
+												)}
+											</Box>
+
+											<Box
+												component='form'
+												sx={{ mt: 2, maxWidth: '22.5rem' }}
+												onSubmit={handleSubmit}>
+												<TextField
+													sx={{ maxWidth: '22.5rem' }}
+													fullWidth
+													id='email'
+													name='email'
+													label='Email or ID'
+													placeholder='Email or ID'
+													autoFocus
+													required
+													value={userName}
+													onChange={(e) => {setUserName(e.target.value); setUserNameChange(true)}}
+													error={(userNameChange && userName.length==0 )|| userNameError}
+													helperText={
+														userName.length ===0 && userNameChange?
+															'Email or ID should not be empty' : " "
+													}
+													InputLabelProps={{
+														shrink: true,
+													}}
+													margin='dense'
+												/>
+												<TextField
+													sx={{ mt: '1.5rem', maxWidth: '22.5rem' }}
+													fullWidth
+													id='password'
+													variant='outlined'
+													required
+													type={showPassword ? 'text' : 'password'}
+													name='password'
+													label='Password'
+													placeholder='Password'
+													value={password}
+													onChange={(e) => {setPassword(e.target.value); setPasswordChange(true)}}
+													error={
+														(passwordChange &&  !PWD_REGEX.test(password)) || passwordError
+													}
+													helperText={
+														(( !PWD_REGEX.test(password)) && passwordChange)?
+															'Password should be a minimum of 8 characters with uppercase,lowercase and special character (!,#,$,%,^,*,+,-,_,=,?,@,|)': " "
+													}
+													InputLabelProps={{
+														shrink: true,
+													}}
+													InputProps={{
+														endAdornment: (
+															<InputAdornment position='end'>
+																<IconButton
+																	// aria-label='toggle password visibility'
+																	onClick={handleClickShowPassword}
+																	onMouseDown={handleMouseDownPassword}>
+																	{showPassword ? <Visibility /> : <VisibilityOff />}
+																</IconButton>
+															</InputAdornment>
+														),
+													}}
+													margin='normal'
+												/>
+												<Grid
+													container
+													sx={{ mt: 0.75 }}>
+													<Grid
+														item
+														xs></Grid>
+													<Grid
+														item
+														xs
+														sx={{ display: 'flex', justifyContent: 'end' }}>
+														<Link
+															href='/lostpassword'
+															underline='hover'
+															sx={{
+																textDecoration: 'none',
+																fontSize: '16',
+																color: 'black'
+															}}>
+															Forgot Password
+														</Link>
+													</Grid>
+												</Grid>
+
+												<Button
+													type='submit'
+													fullWidth
+													variant='contained'
+													sx={{
+														mt: 4,
+														height: '51px',
+														bgcolor: '#3C5148',
+														borderColor: '#FFFFFF',
+														textTransform: 'none',
+													}}>
+													Log in
+												</Button>
+											</Box>
+										</Box>
+									</Box>
+								</Grid>
+							</Grid>
+						</Container>
+						)
+			}
 		</ThemeProvider>
 	);
 };

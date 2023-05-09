@@ -18,7 +18,11 @@ export type Department={
 
 export type Context={
     departments: Department[],
-    setDepartments: React.Dispatch<React.SetStateAction<Department[]>>
+    setDepartments: React.Dispatch<React.SetStateAction<Department[]>>,
+    userVerified: boolean, 
+    setUserVerified: React.Dispatch<React.SetStateAction<boolean>>
+    userAccount: UserAccount, 
+    setUserAccount: React.Dispatch<React.SetStateAction<UserAccount>>
 }
 
 export type NewUserFormChange={
@@ -35,4 +39,12 @@ export type NewUserFormChangeStudent={
     email: boolean
     number: boolean
     department: boolean
+}
+
+export type UserAccount={
+    id: string,
+    email: string,
+    role: 'ADMIN' | 'LECTURER' | 'STUDENT'
+    isverified: boolean
+
 }

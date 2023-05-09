@@ -20,7 +20,7 @@ import notification from '../../config/notificationConfig';
 const ForgetPassword = () => {
 	
 	const navigate = useNavigate();
-
+	const [isLoading, setIsLoading] = useState(false)
 	const [userName, setUserName] = useState('');
 	const [success, setSuccess] = useState(false);
 	const [messages, setMessages] = useState('');
