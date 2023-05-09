@@ -221,7 +221,7 @@ const LecturerRegistration = () => {
 						error={(firstName.length === 0  && formChange.firstname) || serverError.firstname}
 						helperText={
 							(firstName.length ==0 && formChange.firstname)?
-								 'Firstname field is empty ': " "
+								'Firstname field is empty ': " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -241,7 +241,7 @@ const LecturerRegistration = () => {
 						error={(lastName.length === 0 && formChange.lastname) || serverError.lastname }
 						helperText={
 							(lastName.length === 0 && formChange.lastname) ?
-								 'Lastname field is empty ' : " "
+								'Lastname field is empty ' : " "
 						}
 						InputLabelProps={{
 							shrink: true,

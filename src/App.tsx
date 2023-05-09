@@ -17,6 +17,7 @@ import axios from 'axios';
 import { retrieveaccessToken } from './utilis/sessionToken';
 import { SERVER_URL } from './Constants/Constants';
 import { InitialContext } from './context/context';
+import Logout from './Components/Logout/Logout';
 
 function App() {
 	const {setUserVerified,setUserAccount} = useContext(InitialContext)
@@ -51,7 +52,10 @@ function App() {
 						path='/'
 						element={<Login />}
 					/>
-
+					<Route
+						path='/Logout'
+						element={<Logout />}
+					/>
 					<Route
 						path='/lostpassword'
 						element={<ForgetPassword />}
@@ -77,7 +81,10 @@ function App() {
 						path='/newstudent'
 						element={<StudentRegistation />}
 					/>
-					<Route path='/reset/:id' element={<ResetPasswordPage />}/>
+					<Route
+						path='/reset/:id'
+						element={<ResetPasswordPage />}
+					/>
 					<Route
 						path='*'
 						element={<AdminDashboard />}

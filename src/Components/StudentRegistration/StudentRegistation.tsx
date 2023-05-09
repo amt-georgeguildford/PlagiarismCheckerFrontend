@@ -1,5 +1,4 @@
 import { useState, useContext} from 'react';
-import { department as Department } from '../../Constants/Constants';
 import notification from '../../config/notificationConfig';
 import axios from 'axios';
 
@@ -30,13 +29,8 @@ const StudentRegistation = () => {
 
 	const [formChange, setFormChange] = useState({} as NewUserFormChangeStudent)
 	const {departments} = useContext(InitialContext)
-	// const [errEntries, setErrEntries] = useState(false);
-	// const [errResponse, setErrResponse] = useState('');
 
-	// useEffect(() => {
-	// 	setErrEntries(false);
-	// 	setErrResponse('');
-	// }, [lastName, firstName, telNumber, email, department]);
+	
 
 	const ValidateAllDataEntries = () => {
 		if (!USER_REGEX.test(lastName)) {
@@ -88,7 +82,7 @@ const StudentRegistation = () => {
 					entryData);
 	
 					setFormChange({firstname: false, lastname: false, department: false, email:false,number: false})	
-					console.log(response)
+					// console.log(response)
 					ResetInputEntries()
 					notification.success('New Lecture Account Created')
 
@@ -164,29 +158,6 @@ const StudentRegistation = () => {
 					}}>
 					Provide your login details to create student profile
 				</Box>
-				{/* <Box
-					sx={{
-						height: '2rem',
-						width: '100%',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-					}}>
-					{errResponse && (
-						<Box
-							sx={{
-								fontSize: '1rem',
-								fontWeight: 400,
-								color: 'red',
-								mt: '0.8rem',
-								width: '100%',
-								height: '2rem',
-								textAlign: 'center',
-							}}>
-							{errResponse}
-						</Box>
-					)}
-				</Box> */}
 				<Box
 					component='form'
 					onSubmit={handleSubmit}
@@ -205,7 +176,7 @@ const StudentRegistation = () => {
 						error={(firstName.length === 0  && formChange.firstname) || serverError.firstname}
 						helperText={
 							(firstName.length ==0 && formChange.firstname)?
-								 'Firstname field is empty ': " "
+							'Firstname field is empty ': " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -225,7 +196,7 @@ const StudentRegistation = () => {
 						error={(lastName.length === 0 && formChange.lastname) || serverError.lastname }
 						helperText={
 							(lastName.length === 0 && formChange.lastname) ?
-								 'Lastname field is empty ' : " "
+							'Lastname field is empty ' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -278,9 +249,10 @@ const StudentRegistation = () => {
 						id='department'
 						name='department'
 						label='Department'
-						placeholder='Enter Department'
+						// placeholder='Enter Department'
 						select
 						required
+						defaultValue={'Department'}
 						value={department}
 						onChange={(e) => {setDepartment(e.target.value); setFormChange({...formChange, department: true})}}
 						error={(department ==='select department' && formChange.department) || serverError.department}
@@ -295,7 +267,7 @@ const StudentRegistation = () => {
 					>
 						<MenuItem
 							key='i1'
-							value=''>
+							value='Department'>
 							<em>select department</em>
 						</MenuItem>
 						{departments.map((option) => (

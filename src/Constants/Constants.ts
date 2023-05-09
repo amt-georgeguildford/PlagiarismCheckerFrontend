@@ -19,27 +19,57 @@ export const myTHEME = {
 
 
 
+/// Styling Constants For the Logout Form
 
-export const department = [
-	{
-		id: '201',
-		name: 'History',
-	},
-	{
-		id: '202',
-		name: 'Geography',
-	},
-	{
-		id: '203',
-		name: 'Economics',
-	},
-	{
-		id: '204',
-		name: 'Mathematics',
-	},
+export const paperStyle = {
+	padding: '20px 30px',
+	margin: '20vh auto',
+	maxWidth: '30rem',
+	maxHeight: '25.5rem',
+	backgroundColor: ' #E9ECED',
+};
+export const gridStyle = {
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	height: '100vh',
+	width: '100vw',
+};
 
-	{
-		id: '205',
-		name: 'Physics',
-	},
-];
+export const modalStyle = {
+	display: 'block',
+	position: 'fixed',
+	top: 0,
+	left: 0,
+	width: '100%',
+	height: '100%',
+	backgroundColor: 'rgba(0 ,0 ,0 , 0.5)',
+	maxWidth: '100vw',
+};
+
+export const modalBox = {
+	zIndex: 50,
+	padding: '20px 30px',
+	margin: '30vh auto',
+	maxWidth: '30rem',
+	maxHeight: '25.5rem',
+};
+export const typoStyle = {
+	mb: '2.8rem',
+	fontStyle: 'Verdana',
+	textAlign: 'center',
+};
+export const btnStyle = {
+	height: '51',
+	width: '10rem',
+	fontSize: '1rem',
+	backgroundColor: '#3C5148',
+	alignItems: 'center',
+	marginBottom: '1.5rem',
+};
+
+export const btnBagStyle = {
+	display: 'flex',
+	alignItems: 'Center',
+	justifyContent: 'center',
+};
