@@ -9,73 +9,81 @@ import Topography from '@mui/material/Typography';
 
 //Regular React imports
 import { useState } from 'react';
-import {SERVER_URL,EMAIL_REGEX} from '../../Constants/Constants';
+import {EMAIL_REGEX, SERVER_URL} from '../../Constants/Constants';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import notification from '../../config/notificationConfig';
+
  
 
 
 const ForgetPassword = () => {
-
+	
 	const navigate = useNavigate();
 
 	const [userName, setUserName] = useState('');
 	const [success, setSuccess] = useState(false);
-	// const [messages, setMessages] = useState('');
+	const [messages, setMessages] = useState('');
 
-
+	const [userNameChange, setUserNameChange] = useState(false)
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const RequestPasswordReset = async () => {
-			
-			try {
-				const requestData = {
-					email: userName,
-				};
-				const response = await axios.post(SERVER_URL, requestData);
-
-				if (response.data.status.ok) {
-					// setSuccess(true)
-					notification.info(
-						'Kindly check your email for instructions on your account password reset.'
-					);
-				}
-				
-			} catch (err: any) {
-				// setSuccess(false);
-				if (err) {
-					if (err.response) {
-						const { status, data } = err.response;
-						const messages = data.message;
-						if (status === 400) {
-							messages.forEach((field: any) => {
-								notification.error(field.msg);
-							});
-						} else {
-							notification.error('Server Error.Request Not Sent.');
-						}
-						return;
-					}
-					notification.error('Check connection.Request Not Sent.');
-				}
-				else{
-					notification.error('Check connection.Request Not Sent.')
-				}
-			}
-		}
-
-		if (EMAIL_REGEX.test(userName)) {
-			RequestPasswordReset();
-			setSuccess(true)
-		}
 
 		if (success) {
 			CloseResetPage();
 			return;
 		}
+		const  postRequestReset= async ()=>{
+			const requestBody ={
+				email: userName
+			}
+			console.log(41, requestBody)
+			try {
+				const response = await axios.post(
+					SERVER_URL+'auth/reset/password/',
+					requestBody
+				);
+				notification.success('Request for password reset successful')
+				// if (response.data.status.ok) {
+				// 	setMessages(
+				// 		'Kindly check your email for instructions on your account password reset.'
+				// 	);
+					
+				// }
+			} catch (err:any) {
+				// const errors = err as Error | AxiosError;
+				console.log(err);
+				if(err){
+
+					if (err.response) {
+						const {status, data}= err.response
+						if(status=== 400){
+							data.message.forEach((field: any)=>{
+								field.path==='email' && setSuccess(false)
+								notification.error(field.msg)
+							})
+						}
+						else{
+							notification.error('Something went wrong')
+						}
+						setMessages('Server is Currently Unavailable. Try Again Later.');
+					} else {
+						setMessages('Request Cannot Be Currently Processed. Try Again Later');
+					}
+				}
+				else{
+					notification.error('Server Unavailable')
+				}
+			}
+			setSuccess(true);
+		}
+
+		if(EMAIL_REGEX.test(userName)){
+			postRequestReset()
+		}
+		
 	};
 
 	const CloseResetPage = () => {
@@ -162,12 +170,11 @@ const ForgetPassword = () => {
 							autoFocus
 							required
 							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
-							error={userName.length > 0 && !EMAIL_REGEX.test(userName)}
+							onChange={(e) => {setUserName(e.target.value); setUserNameChange(true)}}
+							error={(userName.length === 0 || !EMAIL_REGEX.test(userName)) && userNameChange }
 							helperText={
-								userName.length === 0 || EMAIL_REGEX.test(userName)
-									? ' '
-									: 'Email is incorrect'
+								(userName.length === 0 || !EMAIL_REGEX.test(userName)) && userNameChange? 
+									'Enter a valid email': " "
 							}
 							InputLabelProps={{
 								shrink: true,

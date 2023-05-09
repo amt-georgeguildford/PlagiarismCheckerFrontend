@@ -48,7 +48,7 @@ function App() {
 						path='/newstudent'
 						element={<StudentRegistation />}
 					/>
-					<Route path='/reset' element={<ResetPasswordPage />}/>
+					<Route path='/reset/:id' element={<ResetPasswordPage />}/>
 					<Route
 						path='*'
 						element={<AdminDashboard />}

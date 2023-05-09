@@ -20,3 +20,19 @@ export type Context={
     departments: Department[],
     setDepartments: React.Dispatch<React.SetStateAction<Department[]>>
 }
+
+export type NewUserFormChange={
+    firstname: boolean
+    lastname: boolean
+    email: boolean
+    number: boolean
+    qualification: boolean
+    department: boolean
+}
+export type NewUserFormChangeStudent={
+    firstname: boolean
+    lastname: boolean
+    email: boolean
+    number: boolean
+    department: boolean
+}

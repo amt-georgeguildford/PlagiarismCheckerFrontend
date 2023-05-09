@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useContext} from 'react';
 import { department as Department } from '../../Constants/Constants';
 import notification from '../../config/notificationConfig';
 import axios from 'axios';
@@ -16,15 +16,20 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline';
 import MenuItem from '@mui/material/MenuItem';
+import { NewUserFormChangeStudent } from '../../utilis/Types';
+import { InitialContext } from '../../context/context';
 
 
 const StudentRegistation = () => {
+	const [serverError, setServerError] = useState({} as NewUserFormChangeStudent)
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [telNumber, setTelNumber] = useState('');
 	const [email, setEmail] = useState('');
 	const [department, setDepartment] = useState('');
 
+	const [formChange, setFormChange] = useState({} as NewUserFormChangeStudent)
+	const {departments} = useContext(InitialContext)
 	// const [errEntries, setErrEntries] = useState(false);
 	// const [errResponse, setErrResponse] = useState('');
 
@@ -51,7 +56,7 @@ const StudentRegistation = () => {
 			return false;
 		}
 
-		if (department===''){
+		if (department==='select department'){
 			return false;
 		}
 		return true;
@@ -82,21 +87,39 @@ const StudentRegistation = () => {
 					SERVER_URL + 'api/v1/staff/student',
 					entryData);
 	
-				response?.data && ResetInputEntries();
+					setFormChange({firstname: false, lastname: false, department: false, email:false,number: false})	
+					console.log(response)
+					ResetInputEntries()
+					notification.success('New Lecture Account Created')
 
 			} catch (err:any) {
-				if (err.response?.status === 400) {
-					err.response?.data?.forEach((field:any) => {
-						field.path === 'lastName';
-						field.path === 'firstName';
-						field.path === 'email';
-						field.path === 'telNumber';
-						field.path === 'department';
-
-						notification.error(field.msg);
-					});
-				} else {
-					notification.error('Server Error');
+				console.log(err)
+				if(err){
+					console.log(err)
+					if(err.response){
+						const {status, data}= err.response;
+						const messages= data.message
+						console.log('gerer')
+						if(status===400 ){
+							messages.forEach((field: any)=>{
+								field.path==='firstname'&& setServerError({...serverError, firstname: true});
+								field.path==='lastname'&& setServerError({...serverError, lastname: true})
+								field.path==='email' && setServerError({...serverError, email: true})
+								field.path==='phone_number' && setServerError({...serverError, number: true})
+								field.path==='department'&& setServerError({...serverError, department: true})
+								notification.error(field.msg)
+							})
+						}
+						else{
+							notification.error('Server Error')
+						}
+						return
+					}
+					notification.error('Check connection')
+					
+				}
+				else{
+					notification.error('Check connection')
 				}
 			}
 		}
@@ -178,12 +201,11 @@ const StudentRegistation = () => {
 						autoFocus
 						required
 						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-						error={firstName.length > 0 && firstName.length < 2}
+						onChange={(e) => {setFirstName(e.target.value); setFormChange({...formChange, firstname: true})}}
+						error={(firstName.length === 0  && formChange.firstname) || serverError.firstname}
 						helperText={
-							firstName.length === 0 || firstName.length >= 2
-								? ' '
-								: 'FirstName requires a minimum of 2 Characters'
+							(firstName.length ==0 && formChange.firstname)?
+								 'Firstname field is empty ': " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -199,12 +221,11 @@ const StudentRegistation = () => {
 						placeholder='LastName'
 						required
 						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						error={lastName.length > 0 && lastName.length < 2}
+						onChange={(e) => {setLastName(e.target.value); setFormChange({...formChange, lastname: true})}}
+						error={(lastName.length === 0 && formChange.lastname) || serverError.lastname }
 						helperText={
-							lastName.length === 0 || lastName.length >= 2
-								? ' '
-								: 'Lastname requires a minimum of 2 Characters'
+							(lastName.length === 0 && formChange.lastname) ?
+								 'Lastname field is empty ' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -220,12 +241,11 @@ const StudentRegistation = () => {
 						placeholder='Email'
 						required
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						error={email.length > 0 && !EMAIL_REGEX.test(email)}
+						onChange={(e) => {setEmail(e.target.value); setFormChange({...formChange, email: true})}}
+						error={ (!EMAIL_REGEX.test(email) && formChange.email)|| serverError.email}
 						helperText={
-							email.length === 0 || EMAIL_REGEX.test(email)
-								? ' '
-								: 'Email entered is incorrect.'
+							!EMAIL_REGEX.test(email) && formChange.email
+								? 'Email incorrect.' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -241,12 +261,11 @@ const StudentRegistation = () => {
 						placeholder='Number'
 						required
 						value={telNumber}
-						onChange={(e) => setTelNumber(e.target.value)}
-						error={telNumber.length > 0 && !TEL_REGEX.test(telNumber)}
+						onChange={(e) => {setTelNumber(e.target.value); setFormChange({...formChange, number:true})}}
+						error={(!TEL_REGEX.test(telNumber) && formChange.number) || serverError.number}
 						helperText={
-							telNumber.length === 0 || TEL_REGEX.test(telNumber)
-								? ' '
-								: 'Telephone Number must be at least 10 digits.'
+							!TEL_REGEX.test(telNumber) && formChange.number
+								? 'Telephone Number must be at least 10 digits.' : " "
 						}
 						InputLabelProps={{
 							shrink: true,
@@ -263,13 +282,12 @@ const StudentRegistation = () => {
 						select
 						required
 						value={department}
-						onChange={(e) => setDepartment(e.target.value)}
-						// error={department.length > 0 && department.length < 3}
-						// helperText={
-						// 	department.length === 0 || department.length >= 3
-						// 		? ' '
-						// 		: 'Department must be at least 6 Characters.'
-						// }
+						onChange={(e) => {setDepartment(e.target.value); setFormChange({...formChange, department: true})}}
+						error={(department ==='select department' && formChange.department) || serverError.department}
+						helperText={
+							department=== 'select department'?
+								'Select a department': " "
+						}
 						InputLabelProps={{
 							shrink: true,
 						}}
@@ -280,10 +298,12 @@ const StudentRegistation = () => {
 							value=''>
 							<em>select department</em>
 						</MenuItem>
-						{Department.map((option) => (
+						{departments.map((option) => (
 							<MenuItem
 								key={option.id}
-								value={option.id}>
+								value={option.id}
+								onChange={()=>setDepartment(option
+								.id)}>
 								{option.name}
 							</MenuItem>
 						))}
