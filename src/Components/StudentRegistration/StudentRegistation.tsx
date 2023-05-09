@@ -82,7 +82,7 @@ const StudentRegistation = () => {
 					SERVER_URL + 'api/v1/staff/student',
 					entryData);
 	
-				response?.data && ResetInputEntries();
+				response.data && ResetInputEntries();
 
 			} catch (err:any) {
 				if (err.response?.status === 400) {

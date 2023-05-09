@@ -9,64 +9,81 @@ import Topography from '@mui/material/Typography';
 
 //Regular React imports
 import { useState } from 'react';
-import {SERVER_URL} from '../../Constants/Constants';
+import {EMAIL_REGEX, SERVER_URL} from '../../Constants/Constants';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import notification from '../../config/notificationConfig';
 
  
 
 
 const ForgetPassword = () => {
-
+	
 	const navigate = useNavigate();
 
 	const [userName, setUserName] = useState('');
 	const [success, setSuccess] = useState(false);
 	const [messages, setMessages] = useState('');
 
-
+	const [userNameChange, setUserNameChange] = useState(false)
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (userName.length < 3) {
-			return;
-		}
 
 		if (success) {
 			CloseResetPage();
 			return;
 		}
-
-		try {
-			const response = await axios.post(
-				SERVER_URL,
-				JSON.stringify({
-					userName: userName,
-				})
-			);
-			console.log(response?.data);
-
-			if (response.data.status.ok) {
-				setMessages(
-					'Kindly check your email for instructions on your account password reset.'
+		const  postRequestReset= async ()=>{
+			const requestBody ={
+				email: userName
+			}
+			console.log(41, requestBody)
+			try {
+				const response = await axios.post(
+					SERVER_URL+'auth/reset/password/',
+					requestBody
 				);
-				
+				notification.success('Request for password reset successful')
+				// if (response.data.status.ok) {
+				// 	setMessages(
+				// 		'Kindly check your email for instructions on your account password reset.'
+				// 	);
+					
+				// }
+			} catch (err:any) {
+				// const errors = err as Error | AxiosError;
+				console.log(err);
+				if(err){
+
+					if (err.response) {
+						const {status, data}= err.response
+						if(status=== 400){
+							data.message.forEach((field: any)=>{
+								field.path==='email' && setSuccess(false)
+								notification.error(field.msg)
+							})
+						}
+						else{
+							notification.error('Something went wrong')
+						}
+						setMessages('Server is Currently Unavailable. Try Again Later.');
+					} else {
+						setMessages('Request Cannot Be Currently Processed. Try Again Later');
+					}
+				}
+				else{
+					notification.error('Server Unavailable')
+				}
 			}
-		} catch (err:any) {
-			// const errors = err as Error | AxiosError;
-			console.log(err);
-			if (!err?.response) {
-				setMessages('Server is Currently Unavailable. Try Again Later.');
-			} else if (err.response?.status === 400) {
-				setMessages('Invalid Username or Password');
-			} else if (err.response?.status === 401) {
-				setMessages('Unauthorized');
-			} else {
-				setMessages('Request Cannot Be Currently Processed. Try Again Later');
-			}
+			setSuccess(true);
 		}
-		setSuccess(true);
+
+		if(EMAIL_REGEX.test(userName)){
+			postRequestReset()
+		}
+		
 	};
 
 	const CloseResetPage = () => {
@@ -110,7 +127,7 @@ const ForgetPassword = () => {
 						}}>
 						{messages?'Password reset request has been made.':'Kindly provide your email address for password reset'}
 					</Topography>
-					<Box
+					{/* <Box
 						sx={{
 							width: '100%',
 							height: '2rem',
@@ -136,7 +153,7 @@ const ForgetPassword = () => {
 								{messages}
 							</Box>
 						)}
-					</Box>
+					</Box> */}
 
 					<Box
 						component='form'
@@ -151,12 +168,11 @@ const ForgetPassword = () => {
 							autoFocus
 							required
 							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
-							error={userName.length > 0 && userName.length < 8}
+							onChange={(e) => {setUserName(e.target.value); setUserNameChange(true)}}
+							error={(userName.length === 0 || !EMAIL_REGEX.test(userName)) && userNameChange }
 							helperText={
-								userName.length === 0 || userName.length >= 8
-									? ' '
-									: 'Email should be a minimum length of 8 characters'
+								(userName.length === 0 || !EMAIL_REGEX.test(userName)) && userNameChange? 
+									'Enter a valid email': " "
 							}
 							InputLabelProps={{
 								shrink: true,
