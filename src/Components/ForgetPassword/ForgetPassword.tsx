@@ -6,7 +6,7 @@ import Container from '@mui/material/Container';
 import Topography from '@mui/material/Typography';
 import VerifiedUserSharpIcon from '@mui/icons-material/VerifiedUserSharp';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
 //Regular React imports
@@ -22,19 +22,16 @@ import notification from '../../config/notificationConfig';
 const ForgetPassword = () => {
 	
 	const navigate = useNavigate();
-	const [isLoading, setIsLoading] = useState(false)
+	// const [isLoading, setIsLoading] = useState(false)
 	const [userName, setUserName] = useState('');
 	const [success, setSuccess] = useState(false);
-	// const [messages, setMessages] = useState('');
 	const [submit, setSubmit] = useState(false);
 
 	const [userNameChange, setUserNameChange] = useState(false)
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-
-
-		if (success) {
+		if (submit) {
 			CloseResetPage();
 			return;
 		}
@@ -71,10 +68,12 @@ const ForgetPassword = () => {
 						}
 						// setMessages('Server is Currently Unavailable. Try Again Later.');
 						// setMessages('nok')
+						notification.error('Server Unavailable')
 
 					} else {
 						// setMessages('Request Cannot Be Currently Processed. Try Again Later');
 						// setMessages('nok');
+						notification.error('Server Unavailable')
 					}
 				}
 				else{
@@ -99,30 +98,30 @@ const ForgetPassword = () => {
 
 	return (
 		<>
-			{!submit ? (
-				<Container
-					component='main'
+			<Container
+				component='main'
+				sx={{
+					height: '100vh',
+					width: '100vw',
+					pt: '6rem',
+					pb: '8rem',
+					px: '3.25rem',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}>
+				<CssBaseline />
+				<Box
 					sx={{
-						height: '100vh',
-						width: '100vw',
-						pt: '6rem',
-						pb: '8rem',
-						px: '3.25rem',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
+						maxWidth: '30.5rem',
+						maxHeight: '20rem',
+						border: 1,
+						px: 5,
+						py: 2,
+						borderRadius: 5,
 					}}>
-					<CssBaseline />
-					<Box
-						sx={{
-							maxWidth: '30.5rem',
-							maxHeight: '20rem',
-							border: 1,
-							px: 5,
-							py: 2,
-							borderRadius: 5,
-						}}>
-						<Box>
+					<Box>
+						{!submit ? (
 							<Topography
 								sx={{
 									textAlign: 'center',
@@ -131,15 +130,27 @@ const ForgetPassword = () => {
 									lineHeight: '1rem',
 									maxWidth: '22.5rem',
 								}}>
-								{/* {success
-							? 'Password reset request has been made.'
-							: 'Kindly provide your email address for password reset'} */}
 								Kindly provide your email address for password reset
 							</Topography>
-							<Box
-								component='form'
-								sx={{ mt: 3, mb: 2, maxWidth: '22.5rem' }}
-								onSubmit={handleSubmit}>
+						) : (
+							<Topography
+								sx={{
+									textAlign: 'justify-left',
+									mt: 2,
+									mb: 3,
+									lineHeight: '1rem',
+									maxWidth: '20.5rem',
+								}}>
+								{success
+									? 'Password reset request was successful.Kindly check your email for instructions on your account password reset.'.toUpperCase()
+									: 'Sorry,Server is currently unavailable and Password reset request was unsuccessful.Kindly try again later.'.toUpperCase()}
+							</Topography>
+						)}
+						<Box
+							component='form'
+							sx={{ mt: 3, mb: 2, maxWidth: '22.5rem' }}
+							onSubmit={handleSubmit}>
+							{!submit ? (
 								<TextField
 									fullWidth
 									id='email'
@@ -155,11 +166,11 @@ const ForgetPassword = () => {
 										setUserNameChange(true);
 									}}
 									error={
-										(userName.length === 0 || !EMAIL_REGEX.test(userName)) &&
+										(userName.length !== 0 && !EMAIL_REGEX.test(userName)) &&
 										userNameChange
 									}
 									helperText={
-										(userName.length === 0 || !EMAIL_REGEX.test(userName)) &&
+										(userName.length !== 0 && !EMAIL_REGEX.test(userName)) &&
 										userNameChange
 											? 'Enter a valid email'
 											: ' '
@@ -169,105 +180,46 @@ const ForgetPassword = () => {
 									}}
 									margin='dense'
 								/>
-								<Button
-									type='submit'
-									fullWidth
-									variant='contained'
+							) : (
+								<Box
 									sx={{
-										mt: 1,
-										mb: 2,
-										height: '51px',
-										bgcolor: '#3C5148',
-										borderColor: '#FFFFFF',
-										textTransform: 'none',
+										display: 'flex',
+										justifyContent: 'space-evenly',
+										mb: 4,
 									}}>
-									Submit
-								</Button>
-							</Box>
-						</Box>
-					</Box>
-				</Container>
-			) : (
-				<Container
-					component='main'
-					sx={{
-						height: '100vh',
-						width: '100vw',
-						pt: '6rem',
-						pb: '8rem',
-						px: '3.25rem',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-					}}>
-					<CssBaseline />
-					<Box
-						sx={{
-							maxWidth: '30.5rem',
-							maxHeight: '20rem',
-							border: 1,
-							px: 5,
-							py: 2,
-							borderRadius: 5,
-						}}>
-						<Box>
-							<Topography
-								sx={{
-									textAlign: 'center',
-									mt: 2,
-									mb: 3,
-									lineHeight: '1rem',
-									maxWidth: '22.5rem',
-								}}>
-								{success
-									? 'Password reset request has been successful.'
-									: 'Password reset request unsuccessful. Kindly try again later.'}
-								{/* Kindly provide your email address for password reset */}
-							</Topography>
-							<Box
-								component='form'
-								sx={{ mt: 3, mb: 2, maxWidth: '22.5rem' }}
-								onSubmit={handleSubmit}>
-								<Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-									<ManageAccountsIcon />
+									<ManageAccountsIcon
+										sx={{ color: 'blue', fontSize: '2rem', ml:1 }}
+									/>
+									<Topography variant='h6' >{userName}</Topography>
 
-									<Topography>{userName}</Topography>
-
-									<VerifiedUserSharpIcon />
+									{success ? (
+										<VerifiedUserSharpIcon
+											sx={{ color: 'green', fontSize: '2rem' }}
+										/>
+									) : (
+										<HighlightOffIcon
+											sx={{ color: 'red', fontSize: '2rem' }}
+										/>
+									)}
 								</Box>
-								<Topography
-									sx={{
-										textAlign: 'center',
-										mt: 2,
-										mb: 3,
-										lineHeight: '1rem',
-										maxWidth: '22.5rem',
-									}}>
-									{success
-										? 'Kindly check your email for instructions on your account password reset.'
-											: 'Sorry,We are unable to process your request.Kindly try again later.'
-									}
-								</Topography>
-								<Button
-									type='submit'
-									fullWidth
-									variant='contained'
-									sx={{
-										mt: 1,
-										mb: 2,
-										height: '51px',
-										bgcolor: '#3C5148',
-										borderColor: '#FFFFFF',
-										textTransform: 'none',
-									}}>
-									{`${!submit ? 'Submit' : 'Close'}`}
-									{/* Submit */}
-								</Button>
-							</Box>
+							)}
+							<Button
+								type='submit'
+								fullWidth
+								variant='contained'
+								sx={ {
+									mt: 1,
+									height: '51px',
+									bgcolor: '#3C5148',
+									borderColor: '#FFFFFF',
+									textTransform: 'none',
+								}}>
+								{`${!submit ? 'Submit' : 'Close'}`}
+							</Button>
 						</Box>
 					</Box>
-				</Container>
-			)}
+				</Box>
+			</Container>				
 		</>
 	);
 };

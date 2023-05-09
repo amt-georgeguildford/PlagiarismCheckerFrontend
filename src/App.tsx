@@ -6,7 +6,7 @@ import LecturerRegistration from './Components/LecturerRegistration/LecturerRegi
 import StudentRegistation from './Components/StudentRegistration/StudentRegistation';
 import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
 
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 
 import { ToastContainer } from 'react-toastify';
