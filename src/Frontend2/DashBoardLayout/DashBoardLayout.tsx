@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Sidebar from '../Sidebar/Sidebar'
 import Homey from '../Homey/Homey'
 import './dashboardLayout.scss';
