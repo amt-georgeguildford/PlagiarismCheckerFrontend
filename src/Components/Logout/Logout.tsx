@@ -16,26 +16,27 @@ const Logout = ({showModal,setShowModal}: {showModal: boolean,setShowModal:React
 	const navigate=useNavigate()
 
 	const handleUserLogout = () => {
-		// localStorage.removeItem('accessToken')
-		// localStorage.removeItem('refreshToken')
-		console.log(localStorage.getItem('accessToken'))
-		const logoutFunc= async ()=>{
-			try {
-				const signOut= await axios.post(SERVER_URL+'auth/logout', {
-					headers:{
-						"Authorization": `Bearer ${localStorage.getItem('accessToken')}`
-					}
+		localStorage.removeItem('accessToken')
+		localStorage.removeItem('refreshToken')
+		navigate("/")
+		// console.log(localStorage.getItem('accessToken'))
+		// const logoutFunc= async ()=>{
+		// 	try {
+		// 		const signOut= await axios.post(SERVER_URL+'auth/logout', {
+		// 			headers:{
+		// 				"Authorization": `Bearer ${localStorage.getItem('accessToken')}`
+		// 			}
 					
-				})
-				console.log(signOut.data)
-			} catch (error) {
-				console.log(error)
-				// localStorage.removeItem('accessToken')
-				// localStorage.removeItem('refreshToken')
-				navigate('/')
-			}
-		}
-		logoutFunc()
+		// 		})
+		// 		console.log(signOut.data)
+		// 	} catch (error) {
+		// 		console.log(error)
+		// 		// localStorage.removeItem('accessToken')
+		// 		// localStorage.removeItem('refreshToken')
+		// 		navigate('/')
+		// 	}
+		// }
+		// logoutFunc()
 	}
 
 	
