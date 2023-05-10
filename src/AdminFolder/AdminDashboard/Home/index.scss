@@ -14,8 +14,12 @@
         
         .page-items {
             padding: 0 1rem;
+            font-size: 1.5rem;
             &:not(&:first-child){
                 border-left: 1px solid #3C5148;
+            }
+            p{
+                margin-top:1.3rem;
             }
             small{
                 color: #757575;
@@ -26,11 +30,17 @@
     .null-work {
         margin: 0 35%;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         img{
             margin-bottom: -1rem;
         }
-        small{
+        p{
+            max-width: 350px;
             color: #C5C5C5;
+            font-size: 1.2rem;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
     }
 }

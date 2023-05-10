@@ -67,8 +67,8 @@ useEffect(()=>{
                 <div className='null-work'>
                      <img src='/public/assets/no-work-done.png' alt=''/>
                     
-                        <small>You have not made any change<br/>
-                        for your organisation yet</small>
+                        <p>You have not made any change
+                        for your organisation yet</p>
                 </div>
     </div>
   )

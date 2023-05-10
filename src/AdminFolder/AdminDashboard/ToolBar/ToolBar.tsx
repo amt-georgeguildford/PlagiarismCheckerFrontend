@@ -5,7 +5,7 @@ import {useLocation} from 'react-router-dom'
 
 const ToolBar = () => {
   const location = useLocation();
-  
+  const today= new Date()
   return (
         <div className="main-content">
           <div className="top-bar">
@@ -18,7 +18,7 @@ const ToolBar = () => {
                   location.pathname==='/dashboard/statistics'? "Statistics": ""
                 }
               </p>
-              <span>May 5th 2023</span>
+              <span>{today.toDateString()}</span>
             </div>
 
             <div className='search-element'>

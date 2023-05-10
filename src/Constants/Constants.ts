@@ -5,7 +5,7 @@ export const PWD_REGEX =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%?^=+*_|-])
 export const TEL_REGEX = /^[0-9+]{1,}[0-9-]{9,15}$/
 // export const EMAIL_REGEX=/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 export const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-export const SERVER_URL = 'https://plagiarismcheckerwork-production.up.railway.app/';
+export const SERVER_URL = 'http://localhost:5000/';
 
 export const ACCESS_TOKEN = 'ADMIN';
 
