@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import  {useState, useEffect} from 'react'
 import './index.scss';
 import axios from 'axios';
 import { SERVER_URL } from '../../../Constants/Constants';
@@ -6,10 +6,10 @@ import { DatabaseStat } from '../../../utilis/Types';
 
 const Home = () => {
   const [stats, setStats] = useState({} as DatabaseStat);
-  const [lecturerNumber, setLecturerNumber] = useState("");
-  const [studentNumber, setStudentNumber] = useState("");
-  const [totalAssignment, setTotalAssignment] = useState("");
-  const [submissions, setsubmissions] = useState("");
+  // const [lecturerNumber, setLecturerNumber] = useState("");
+  // const [studentNumber, setStudentNumber] = useState("");
+  // const [totalAssignment, setTotalAssignment] = useState("");
+  // const [submissions, setsubmissions] = useState("");
 
 
 
