@@ -126,7 +126,7 @@ const ResetPasswordPage = () => {
 				setVerified(true)
 			} catch (error) {
 				setVerified(false)
-				setUnauthorized(true)
+				// setUnauthorized(true)
 			}
 		}
 		
@@ -194,7 +194,7 @@ const ResetPasswordPage = () => {
 								autoFocus
 								required
 								value={password}
-								onChange={(e) => {setPassword(e.target.value); setPasswordChange(true)}}
+								onChange={(e) => {setPassword(e.target.value)}}
 								error={(password.length < 8  && !PWD_REGEX.test(password))}
 								helperText={
 									(password.length < 8 && !PWD_REGEX.test(password))?
@@ -222,7 +222,7 @@ const ResetPasswordPage = () => {
 								label='Confirm Password'
 								placeholder='Password'
 								value={confirmPassword}
-								onChange={(e) =>{ setConfirmPassword(e.target.value); setConfirmPaswordChange(true)}}
+								onChange={(e) =>{ setConfirmPassword(e.target.value)}}
 								error={
 									
 									confirmPassword.length>0 && password !== confirmPassword && !PWD_REGEX.test(confirmPassword)

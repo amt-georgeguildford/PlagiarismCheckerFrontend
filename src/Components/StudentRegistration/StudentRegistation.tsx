@@ -77,7 +77,7 @@ const StudentRegistation = () => {
 			};
 			try {
 				//retrieve accessToken and add to header file when making post request
-				const response = await axios.post(
+				await axios.post(
 					SERVER_URL + 'api/v1/staff/student',
 					entryData);
 	
