@@ -1,7 +1,7 @@
-import React from 'react';
 import './index.scss';
 import {RiSearch2Line} from 'react-icons/ri';
 import {useLocation} from 'react-router-dom'
+
 
 const ToolBar = () => {
   const location = useLocation();

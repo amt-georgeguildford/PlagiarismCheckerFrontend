@@ -1,4 +1,3 @@
-import React, {useState, useEffect} from 'react';
 import './index.scss';
 import { SlHome, SlLogout } from 'react-icons/sl'
 import { CiSettings } from 'react-icons/ci'
@@ -6,6 +5,7 @@ import { MdOutlineSupervisorAccount } from 'react-icons/md'
 import { HiTrendingUp } from 'react-icons/hi';
 import { HiOutlineBuildingOffice } from 'react-icons/hi2';
 import { NavLink } from 'react-router-dom';
+
 
 
 const Sidebar = ({setShowModal}: {setShowModal: React.Dispatch<React.SetStateAction<boolean>>}) => {
