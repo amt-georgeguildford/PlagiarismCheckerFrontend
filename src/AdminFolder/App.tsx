@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import './App.css'
 import AdminDashboard from './AdminDashboard/AdminDashboard'
 import {Routes, Route, BrowserRouter as Router,} from 'react-router-dom'
@@ -6,7 +6,7 @@ import Home from './AdminDashboard/Home/Home'
 import Departments from './AdminDashboard/Departments/Departments'
 import Lecturers from './AdminDashboard/Lecturers/Lecturers'
 import Statistics from './AdminDashboard/Statistics/Statistics'
-import MainHome from './MainHome'
+
 function App() {
   
 

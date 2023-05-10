@@ -16,13 +16,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const ResetPasswordPage = () => {
 	const [verified, setVerified] = useState(false)
-	const [unauthorized, setUnauthorized] = useState(false)
+	// const [unauthorized, setUnauthorized] = useState(false)
 	const navigate = useNavigate();
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
-	const [passwordChange, setPasswordChange] = useState(false)
-	const [confirmPaswordChange, setConfirmPaswordChange] = useState(false)
+	// const [passwordChange, setPasswordChange] = useState(false)
+	// const [confirmPaswordChange, setConfirmPaswordChange] = useState(false)
 	// const [errorMsg, setErrorMsg] = useState('');
 	// const [success, setSuccess] = useState(true);
 

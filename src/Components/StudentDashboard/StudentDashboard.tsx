@@ -1,8 +1,6 @@
-import axios from 'axios';
-import { useContext, useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
-import { SERVER_URL } from '../../Constants/Constants';
-import { InitialContext } from '../../context/context';
+
 const StudentDashboard = () => {
 	
 	return (
