@@ -46,7 +46,10 @@ function App() {
 				setUserVerified(false)
 			}
 		}
-		verifyUser()
+		if(localStorage.getItem('accessToken')!=null){
+
+			verifyUser()
+		}
 	},[])
 	return (
 		<>
@@ -94,11 +97,8 @@ function App() {
 						path='/newstudent'
 						element={<StudentRegistation />}
 					/>
-					<Route path='/reset/:id' element={<ResetPasswordPage />}/>
+					<Route path='/reset' element={<ResetPasswordPage />}/>
 				
-					<Route
-					path='*'
-					element={<AdminDashboard />}/>
 				</Routes>
 			</Router>
 			<ToastContainer />
