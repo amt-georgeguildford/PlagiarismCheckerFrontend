@@ -16,7 +16,7 @@ import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { SERVER_URL } from './Constants/Constants';
 import { InitialContext } from './context/context';
-import Logout from './Components/Logout/Logout';
+// import Logout from './Components/Logout/Logout';
 import AdminDashboard from './AdminFolder/AdminDashboard/AdminDashboard';
 import Home from './AdminFolder/AdminDashboard/Home/Home';
 import Departments from './AdminFolder/AdminDashboard/Departments/Departments';
